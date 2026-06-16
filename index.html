@@ -497,7 +497,7 @@
  Στη γραμμή πληρώματος γράψτε τον αριθμό αθλητικού δελτίου και πατήστε το κουμπί <strong>ΑΝΑΖΗΤΗΣΗ ΜΕΛΟΥΣ</strong> στην ίδια γραμμή.
 </div>
     <div id="crewList"></div>
-<button class="btn secondary" type="button" onclick="addCrewMemberSafe()">
+<button id="addCrewMemberBtn" class="btn secondary" type="button" onclick="addCrewMemberSafe()">
   + Προσθήκη μέλους
 </button>
   </div>
@@ -1028,7 +1028,7 @@ setStatus("Η αναζήτηση ολοκληρώθηκε.");
       });
 
       if ((state.crew || []).length > 0) {
-        document.getElementById("continueToJotformBtn").style.display = "inline-block";
+        
       }
 
       setTimeout(() => {
@@ -1155,10 +1155,12 @@ if (crewSectionEl && input.closest("#crewScreen")) {
     document.getElementById("continueToJotformBtn").style.display = "inline-block";
   }
 }
-    if (statusEl) {
-   statusEl.innerText = "✔ Βρέθηκε";
-statusEl.style.color = "#2e7d32";
-    }
+if (statusEl) {
+  statusEl.innerText = "✔ Βρέθηκε";
+  statusEl.style.color = "#2e7d32";
+}
+
+updateCrewActionButtons();
 
   } catch (err) {
     console.error(err);
@@ -1218,8 +1220,10 @@ function addCrewMember() {
 </td>
   `;
 
-  tbody.appendChild(tr);
-  renumberCrewRows();
+tbody.appendChild(tr);
+renumberCrewRows();
+updateCrewActionButtons();
+updateCrewActionButtons();
 }
 
 function addCrewMemberSafe() {
