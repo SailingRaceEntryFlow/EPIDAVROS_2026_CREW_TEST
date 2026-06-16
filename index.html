@@ -494,7 +494,7 @@
 <div id="crewSection" style="display:none;">
     <strong>ΠΛΗΡΩΜΑ</strong>
 <div style="font-size:14px; margin:6px 0 10px 0;">
-  Συμπληρώστε <strong>ΜΟΝΟ</strong> τον αριθμό αθλητικού δελτίου του μέλους πληρώματος και πατήστε 🔍
+ Στη γραμμή πληρώματος γράψτε τον αριθμό αθλητικού δελτίου και πατήστε το κουμπί <strong>ΑΝΑΖΗΤΗΣΗ ΜΕΛΟΥΣ</strong> στην ίδια γραμμή.
 </div>
     <div id="crewList"></div>
 <button class="btn secondary" type="button" onclick="addCrewMemberSafe()">
@@ -1182,7 +1182,7 @@ function addCrewMember() {
             <th style="border:1px solid #bfb6aa; padding:6px;">ΔΕΛΤΙΟ</th>
             <th style="border:1px solid #bfb6aa; padding:6px;">ΟΝΟΜΑ</th>
             <th style="border:1px solid #bfb6aa; padding:6px;">ΟΜΙΛΟΣ</th>
-            <th style="border:1px solid #bfb6aa; padding:6px; width:90px;">ΕΝΕΡΓΕΙΑ</th>
+          <th style="border:1px solid #bfb6aa; padding:6px; width:130px;">ΑΝΑΖΗΤΗΣΗ</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -1204,11 +1204,11 @@ function addCrewMember() {
     <td style="border:1px solid #bfb6aa; padding:6px;"><span class="name"></span></td>
     <td style="border:1px solid #bfb6aa; padding:6px;"><span class="club"></span></td>
    <td style="border:1px solid #bfb6aa; padding:6px; text-align:center;">
-  <button type="button"
-          onclick="lookupPerson(this.closest('tr').querySelector('input'))"
-          style="background:#f1f4ef; color:#2f241d; border:1px solid #bfb6aa; padding:6px 10px; font-weight:bold; cursor:pointer;">
-    🔍
-  </button>
+ <button type="button"
+        onclick="lookupPerson(this.closest('tr').querySelector('input'))"
+        style="background:#f1f4ef; color:#2f241d; border:1px solid #bfb6aa; padding:6px 8px; font-weight:bold; cursor:pointer; font-size:12px; white-space:nowrap;">
+  🔍 ΑΝΑΖΗΤΗΣΗ ΜΕΛΟΥΣ
+</button>
 
   <button type="button"
           onclick="deleteCrewRow(this)"
