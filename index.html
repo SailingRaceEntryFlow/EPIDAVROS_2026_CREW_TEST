@@ -473,7 +473,11 @@
 <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:8px;">
   <input type="text" placeholder="π.χ. 19012" style="height:42px; width:180px; font-size:18px; text-align:center;">
 
-<button type="button" onclick="lookupPerson(this.previousElementSibling)" style="margin-top:0; background:#f1f4ef; color:#2f241d; border:1px solid #bfb6aa; height:42px; padding:0 16px; font-weight:bold; cursor:pointer;">🔍</button>
+<button type="button"
+        onclick="lookupPerson(this.previousElementSibling)"
+        style="margin-top:0; background:#f1f4ef; color:#2f241d; border:1px solid #bfb6aa; height:42px; padding:0 16px; font-weight:bold; cursor:pointer; white-space:nowrap;">
+  🔍 ΑΝΑΖΗΤΗΣΗ ΚΥΒΕΡΝΗΤΗ
+</button>
 </div>
 
 <div style="height:14px;"></div>
@@ -1167,10 +1171,10 @@ async function lookupPerson(input) {
   nameEl.innerText = "";
   clubEl.innerText = "";
 
-  if (statusEl) {
-    statusEl.innerText = "Γίνεται αναζήτηση...";
-    statusEl.style.color = "#7a5a00";
-  }
+ if (statusEl) {
+  statusEl.innerHTML = '<span class="spinner"></span>Γίνεται αναζήτηση...';
+  statusEl.style.color = "#7a5a00";
+}
 
   try {
     const res = await fetch(PERSON_LOOKUP_URL + "?type=person&id=" + encodeURIComponent(id));
@@ -1309,11 +1313,11 @@ function addCrewMember() {
   🔍 ΑΝΑΖΗΤΗΣΗ ΜΕΛΟΥΣ
 </button>
 
-  <button type="button"
-          onclick="deleteCrewRow(this)"
-          style="color:#b00020;">
-    ✖
-  </button>
+ <button type="button"
+        onclick="deleteCrewRow(this)"
+        style="color:#b00020; background:#fff; border:1px solid #bfb6aa; padding:6px 8px; font-weight:bold; cursor:pointer; font-size:12px; white-space:nowrap; margin-top:4px;">
+  ✖ ΔΙΑΓΡΑΦΗ
+</button>
 </td>
   `;
 
