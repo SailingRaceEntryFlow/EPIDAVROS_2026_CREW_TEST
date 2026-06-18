@@ -630,7 +630,12 @@ crew_10_card: "crew10_card",
 crew_10_club: "crew10_club",
 
 crew_preview: "crew_preview",
-crew_json: "crew_json"
+crew_json: "crew_json",
+
+crew_pdf_aa: "crewpdf_aa",
+crew_pdf_name: "crewpdf_name",
+crew_pdf_card: "crewpdf_card",
+crew_pdf_club: "crewpdf_club"
     };
 
     const sailInput = document.getElementById("sailNumber");
@@ -774,7 +779,22 @@ function buildPrefillUrl(data) {
  params.set("crew_text", crewTextForPreview);
 
   const crewPdfRows = getCrewPdfRows();
+const crewPdfAA = [];
+const crewPdfName = [];
+const crewPdfCard = [];
+const crewPdfClub = [];
 
+crewPdfRows.forEach((row, index) => {
+  crewPdfAA.push(String(index + 1));
+  crewPdfName.push(row.name || "");
+  crewPdfCard.push(row.card || "");
+  crewPdfClub.push(shortClubName(row.club || ""));
+});
+
+params.set(fieldNames.crew_pdf_aa, crewPdfAA.join("\n"));
+params.set(fieldNames.crew_pdf_name, crewPdfName.join("\n"));
+params.set(fieldNames.crew_pdf_card, crewPdfCard.join("\n"));
+params.set(fieldNames.crew_pdf_club, crewPdfClub.join("\n"));
 
 for (let i = 1; i <= 10; i++) {
   const row = crewPdfRows[i - 1] || {};
