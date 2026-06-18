@@ -786,9 +786,9 @@ const crewPdfClub = [];
 
 crewPdfRows.forEach((row, index) => {
   crewPdfAA.push(String(index + 1));
-  crewPdfName.push(row.name || "");
+  crewPdfName.push(cutForPdf(row.name || "", 24));
   crewPdfCard.push(row.card || "");
-  crewPdfClub.push(shortClubName(row.club || ""));
+  crewPdfClub.push(cutForPdf(shortClubName(row.club || ""), 28));
 });
 
 params.set(fieldNames.crew_pdf_aa, crewPdfAA.join("\n"));
@@ -843,6 +843,16 @@ function shortClubName(club) {
     .trim();
 }
 
+function cutForPdf(value, maxLength) {
+  let text = String(value || "")
+    .replace(/\+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (text.length <= maxLength) return text;
+
+  return text.substring(0, maxLength - 1).trim() + "…";
+}    
 
 function buildCrewTextForPdf() {
   function cleanText(v) {
