@@ -517,7 +517,25 @@
   </div>
 
   <div id="crewList"></div>
+<div id="wosrSelectBox" style="display:none; margin:16px auto 10px auto; padding:12px; border:1px solid #bfb6aa; background:#f8f8f8; max-width:620px; text-align:left;">
+  <div style="font-weight:bold; text-align:center; margin-bottom:10px;">
+    ΕΞΟΙΚΕΙΩΜΕΝΑ ΜΕΛΗ ΠΛΗΡΩΜΑΤΟΣ WS OSR 6.05.3
+  </div>
 
+  <label style="font-weight:bold;">
+    Μέλος πληρώματος (1):
+  </label>
+  <select id="wosrMember1" style="width:100%; height:38px; font-size:15px; margin:6px 0 12px 0;">
+    <option value="">Επιλέξτε Α/Α μέλους</option>
+  </select>
+
+  <label style="font-weight:bold;">
+    Μέλος πληρώματος (2):
+  </label>
+  <select id="wosrMember2" style="width:100%; height:38px; font-size:15px; margin-top:6px;">
+    <option value="">Επιλέξτε Α/Α μέλους</option>
+  </select>
+</div>
   <button class="btn secondary" type="button" onclick="addCrewMemberSafe()">
     + Προσθήκη μέλους
   </button>
@@ -656,7 +674,10 @@ crew_json: "crew_json",
 crew_pdf_aa: "crewpdf_aa",
 crew_pdf_name: "crewpdf_name",
 crew_pdf_card: "crewpdf_card",
-crew_pdf_club: "crewpdf_club"
+crew_pdf_club: "crewpdf_club",
+
+wosr_member_1: "wosr_member_1",
+wosr_member_2: "wosr_member_2"
     };
 
     const sailInput = document.getElementById("sailNumber");
@@ -816,7 +837,15 @@ params.set(fieldNames.crew_pdf_aa, crewPdfAA.join("\n"));
 params.set(fieldNames.crew_pdf_name, crewPdfName.join("\n"));
 params.set(fieldNames.crew_pdf_card, crewPdfCard.join("\n"));
 params.set(fieldNames.crew_pdf_club, crewPdfClub.join("\n"));
+const wosr1Value = document.getElementById("wosrMember1")?.value || "";
+const wosr2Value = document.getElementById("wosrMember2")?.value || "";
 
+const wosr1Index = parseInt(wosr1Value, 10) - 1;
+const wosr2Index = parseInt(wosr2Value, 10) - 1;
+
+params.set(fieldNames.wosr_member_1, crewPdfRows[wosr1Index]?.name || "");
+params.set(fieldNames.wosr_member_2, crewPdfRows[wosr2Index]?.name || "");
+  
 for (let i = 1; i <= 10; i++) {
   const row = crewPdfRows[i - 1] || {};
 
@@ -993,7 +1022,18 @@ setStatus("Η αναζήτηση ολοκληρώθηκε.");
         alert("Δεν έχει προστεθεί κανένα μέλος πληρώματος.\n\nΠάτησε πρώτα '+ Προσθήκη μέλους', βάλε αριθμό δελτίου και πάτησε 🔍.");
         return;
       }
+const wosr1 = document.getElementById("wosrMember1")?.value || "";
+const wosr2 = document.getElementById("wosrMember2")?.value || "";
 
+if (!wosr1 || !wosr2) {
+  alert("Παρακαλώ επιλέξτε δύο εξοικειωμένα μέλη πληρώματος WS OSR 6.05.3.");
+  return;
+}
+
+if (wosr1 === wosr2) {
+  alert("Παρακαλώ επιλέξτε δύο διαφορετικά μέλη πληρώματος.");
+  return;
+}
       saveEntryState();
 
       const formUrl = buildPrefillUrl(lastFoundData);
@@ -1171,10 +1211,12 @@ async function lookupPerson(input) {
   nameEl.innerText = "";
   clubEl.innerText = "";
 
- if (statusEl) {
-  statusEl.innerHTML = '<span class="spinner"></span>Γίνεται αναζήτηση...';
-  statusEl.style.color = "#7a5a00";
+if (statusEl) {
+  statusEl.innerText = "✔ Βρέθηκε";
+  statusEl.style.color = "#2e7d32";
 }
+
+refreshWosrSelectors();
 
   try {
     const res = await fetch(PERSON_LOOKUP_URL + "?type=person&id=" + encodeURIComponent(id));
@@ -1358,10 +1400,54 @@ function deleteCrewRow(btn) {
   renumberCrewRows();
 }
 
+function refreshWosrSelectors() {
+  const select1 = document.getElementById("wosrMember1");
+  const select2 = document.getElementById("wosrMember2");
+  const box = document.getElementById("wosrSelectBox");
+
+  if (!select1 || !select2 || !box) return;
+
+  const previous1 = select1.value;
+  const previous2 = select2.value;
+
+  select1.innerHTML = '<option value="">Επιλέξτε Α/Α μέλους</option>';
+  select2.innerHTML = '<option value="">Επιλέξτε Α/Α μέλους</option>';
+
+  const rows = getCrewPdfRows();
+
+  if (rows.length === 0) {
+    box.style.display = "none";
+    return;
+  }
+
+  box.style.display = "block";
+
+  rows.forEach((row, index) => {
+    const aa = index + 1;
+    const label = aa + " - " + (row.name || "") + " (" + (row.card || "") + ")";
+
+    const option1 = document.createElement("option");
+    option1.value = String(aa);
+    option1.textContent = label;
+
+    const option2 = document.createElement("option");
+    option2.value = String(aa);
+    option2.textContent = label;
+
+    select1.appendChild(option1);
+    select2.appendChild(option2);
+  });
+
+  select1.value = previous1;
+  select2.value = previous2;
+}
+    
 function renumberCrewRows() {
   document.querySelectorAll("#crewTable tbody tr").forEach((tr, index) => {
     tr.querySelector(".rowNo").innerText = index + 1;
   });
+
+  refreshWosrSelectors();
 }
 function addCrewMemberFromData(member) {
   addCrewMember();
