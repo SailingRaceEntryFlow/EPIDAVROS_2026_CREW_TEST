@@ -958,12 +958,12 @@ function buildCrewTextForPdf() {
     return String(v || "").replace(/\+/g, " ").trim();
   }
 
-  function padRight(text, width) {
-    text = cleanText(text);
-    return text.length >= width
-      ? text.substring(0, width - 1) + " "
-      : text.padEnd(width, " ");
-  }
+ function padRight(text, width) {
+  text = cleanText(text);
+  return text.length >= width
+    ? text.substring(0, width - 1) + "…"
+    : text.padEnd(width, " ");
+}
 
   function centerText(text, width) {
     text = cleanText(text);
