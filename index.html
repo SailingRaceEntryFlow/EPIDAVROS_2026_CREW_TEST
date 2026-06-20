@@ -842,12 +842,19 @@ params.set(fieldNames.crew_pdf_card, crewPdfCard.join("\n"));
 params.set(fieldNames.crew_pdf_club, crewPdfClub.join("\n"));
 const wosr1Value = document.getElementById("wosrMember1")?.value || "";
 const wosr2Value = document.getElementById("wosrMember2")?.value || "";
+const captainState = getCaptainState();
 
-const wosr1Index = parseInt(wosr1Value, 10) - 1;
-const wosr2Index = parseInt(wosr2Value, 10) - 1;
+function getWosrName(value) {
+  if (value === "captain") {
+    return captainState.name || "";
+  }
 
-params.set(fieldNames.wosr_member_1, crewPdfRows[wosr1Index]?.name || "");
-params.set(fieldNames.wosr_member_2, crewPdfRows[wosr2Index]?.name || "");
+  const index = parseInt(value, 10) - 1;
+  return crewPdfRows[index]?.name || "";
+}
+
+params.set(fieldNames.wosr_member_1, getWosrName(wosr1Value));
+params.set(fieldNames.wosr_member_2, getWosrName(wosr2Value));
   
 for (let i = 1; i <= 10; i++) {
   const row = crewPdfRows[i - 1] || {};
@@ -1417,28 +1424,39 @@ function refreshWosrSelectors() {
   select2.innerHTML = '<option value="">Επιλέξτε Α/Α μέλους</option>';
 
   const rows = getCrewPdfRows();
+  const captain = getCaptainState();
 
-  if (rows.length === 0) {
+  if (!captain.name && rows.length === 0) {
     box.style.display = "none";
     return;
   }
 
   box.style.display = "block";
 
-  rows.forEach((row, index) => {
-    const aa = index + 1;
-    const label = aa + " - " + (row.name || "") + " (" + (row.card || "") + ")";
-
+  function addOptionToBoth(value, label) {
     const option1 = document.createElement("option");
-    option1.value = String(aa);
+    option1.value = value;
     option1.textContent = label;
 
     const option2 = document.createElement("option");
-    option2.value = String(aa);
+    option2.value = value;
     option2.textContent = label;
 
     select1.appendChild(option1);
     select2.appendChild(option2);
+  }
+
+  if (captain.name && captain.card) {
+    addOptionToBoth(
+      "captain",
+      "ΚΥΒ - " + captain.name + " (" + captain.card + ")"
+    );
+  }
+
+  rows.forEach((row, index) => {
+    const aa = index + 1;
+    const label = aa + " - " + (row.name || "") + " (" + (row.card || "") + ")";
+    addOptionToBoth(String(aa), label);
   });
 
   select1.value = previous1;
