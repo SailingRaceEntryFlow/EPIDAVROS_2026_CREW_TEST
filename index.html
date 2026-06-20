@@ -403,12 +403,142 @@
         height: 1300px;
       }
     }
-  </style>
+ body.intro-mode .hero,
+body.intro-mode .separator,
+body.intro-mode #eventTitle,
+body.intro-mode .notice-box,
+body.intro-mode .search-area,
+body.intro-mode #status,
+body.intro-mode #resultCard,
+body.intro-mode #actions {
+  display: none !important;
+}
+
+.intro-screen {
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  min-height: 760px;
+  background-color: #dfe5df;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.intro-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.35;
+}
+
+.intro-content {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 28px 20px 34px 20px;
+  text-align: center;
+}
+
+.intro-card {
+  background: rgba(241, 244, 239, 0.82);
+  border-radius: 8px;
+  padding: 28px 22px;
+  margin-top: 24px;
+}
+
+.intro-logo {
+  max-width: 210px;
+  max-height: 95px;
+  display: block;
+  margin: 0 0 22px 0;
+}
+
+.intro-small-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.intro-main-title {
+  font-size: 42px;
+  font-weight: 900;
+  color: #28308f;
+  margin: 22px 0 10px 0;
+  letter-spacing: 2px;
+}
+
+.intro-date {
+  display: inline-block;
+  margin: 18px auto 12px auto;
+  padding: 5px 10px;
+  background: rgba(255,255,255,0.65);
+  font-size: 15px;
+}
+
+.intro-terms {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 18px auto;
+  max-width: 560px;
+}
+
+.intro-check {
+  margin: 18px auto 20px auto;
+  font-size: 14px;
+  text-align: left;
+  max-width: 560px;
+}
+
+.intro-check input {
+  transform: scale(1.2);
+  margin-right: 8px;
+}
+
+.intro-next {
+  min-width: 170px;
+}
 </head>
-<body>
+<body class="intro-mode">
   <div class="page">
     <div class="panel">
 
+    <div id="introScreen" class="intro-screen">
+  <div class="intro-bg" id="introBg"></div>
+
+  <div class="intro-content">
+    <img id="introLogo" class="intro-logo" src="" alt="Logo" />
+
+    <div class="intro-card">
+      <div class="intro-small-title">ΔΗΛΩΣΗ ΣΥΜΜΕΤΟΧΗΣ</div>
+
+      <div style="font-size:16px; font-weight:700; margin-bottom:18px;">
+        στον αγώνα ιστιοπλοΐας ανοικτής θάλασσας
+      </div>
+
+      <div id="introEventTitle" class="intro-main-title"></div>
+
+      <div id="introEventDate" class="intro-date"></div>
+
+      <div class="intro-terms">
+        Τα προσωπικά δεδομένα που καταχωρούνται στην φόρμα χρησιμοποιούνται αποκλειστικά
+        για τη διαχείριση της συμμετοχής στον αγώνα, σύμφωνα με την ισχύουσα νομοθεσία.
+      </div>
+
+      <div class="intro-check">
+        <label>
+          <input type="checkbox" id="introAcceptTerms">
+          Έχω διαβάσει και αποδέχομαι την Πολιτική Απορρήτου και τους Όρους Χρήσης.
+        </label>
+      </div>
+
+      <button class="btn intro-next" type="button" onclick="startApplication()">
+        ΕΠΟΜΕΝΟ
+      </button>
+    </div>
+  </div>
+</div>
+    
       <div class="hero">
         <div class="hero-bg" id="heroBg"></div>
 
@@ -706,10 +836,32 @@ wosr_member_2: "wosr_member_2"
       }, 150);
     }
 
+function startApplication() {
+  const accepted = document.getElementById("introAcceptTerms");
+
+  if (accepted && !accepted.checked) {
+    alert("Παρακαλούμε αποδεχθείτε την Πολιτική Απορρήτου και τους Όρους Χρήσης για να συνεχίσετε.");
+    return;
+  }
+
+  document.body.classList.remove("intro-mode");
+
+  const intro = document.getElementById("introScreen");
+  if (intro) {
+    intro.style.display = "none";
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+    
     function setupHero() {
       document.getElementById("eventLogo").src = EVENT_LOGO;
       document.getElementById("heroBg").style.backgroundImage = "url('" + EVENT_BACKGROUND + "')";
       document.getElementById("eventTitle").textContent = EVENT_TITLE;
+      document.getElementById("introLogo").src = EVENT_LOGO;
+document.getElementById("introBg").style.backgroundImage = "url('" + EVENT_BACKGROUND + "')";
+document.getElementById("introEventTitle").textContent = EVENT_TITLE;
+document.getElementById("introEventDate").textContent = "Ημερομηνία διεξαγωγής του αγώνα: 13 & 14 ΙΟΥΝΙΟΥ 2026";
       document.getElementById("noticeYearText").textContent = NOTICE_YEAR_TEXT;
       document.getElementById("noticeInfoText").textContent = NOTICE_INFO_TEXT;
       
