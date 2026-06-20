@@ -1311,9 +1311,16 @@ async function lookupBulkCrewCards() {
     const tr = rows[rows.length - 1];
     const input = tr.querySelector("input");
 
-    input.value = card;
+  input.value = card;
 
-    await lookupPerson(input);
+await lookupPerson(input);
+
+const name = tr.querySelector(".name")?.innerText.trim() || "";
+const searchButton = tr.querySelector(".crewSearchBtn");
+
+if (name && name !== "Δεν βρέθηκε" && searchButton) {
+  searchButton.style.display = "none";
+}
   }
 
   renumberCrewRows();
@@ -1363,7 +1370,8 @@ function addCrewMember() {
     <td style="border:1px solid #bfb6aa; padding:6px;"><span class="name"></span></td>
     <td style="border:1px solid #bfb6aa; padding:6px;"><span class="club"></span></td>
    <td style="border:1px solid #bfb6aa; padding:6px; text-align:center;">
- <button type="button"
+<button type="button"
+        class="crewSearchBtn"
         onclick="lookupPerson(this.closest('tr').querySelector('input'))"
         style="background:#f1f4ef; color:#2f241d; border:1px solid #bfb6aa; padding:6px 8px; font-weight:bold; cursor:pointer; font-size:12px; white-space:nowrap;">
   🔍 ΑΝΑΖΗΤΗΣΗ ΜΕΛΟΥΣ
