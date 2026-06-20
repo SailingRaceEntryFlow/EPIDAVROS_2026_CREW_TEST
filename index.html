@@ -533,14 +533,14 @@
     Μέλος πληρώματος (1):
   </label>
   <select id="wosrMember1" style="width:100%; height:38px; font-size:15px; margin:6px 0 12px 0;">
-    <option value="">Επιλέξτε ένα μέλος απο το πλήρωμα</option>
+    <option value="">Επιλέξτε ένα μέλος</option>
   </select>
 
   <label style="font-weight:bold;">
     Μέλος πληρώματος (2):
   </label>
   <select id="wosrMember2" style="width:100%; height:38px; font-size:15px; margin-top:6px;">
-    <option value="">Επιλέξτε Α/Α μέλους</option>
+    <option value="">Επιλέξτε ένα μέλος</option>
   </select>
 </div>
 
@@ -1420,8 +1420,8 @@ function refreshWosrSelectors() {
   const previous1 = select1.value;
   const previous2 = select2.value;
 
-  select1.innerHTML = '<option value="">Επιλέξτε Α/Α μέλους</option>';
-  select2.innerHTML = '<option value="">Επιλέξτε Α/Α μέλους</option>';
+select1.innerHTML = '<option value="">Επιλέξτε ένα μέλος</option>';
+select2.innerHTML = '<option value="">Επιλέξτε ένα μέλος</option>';
 
   const rows = getCrewPdfRows();
   const captain = getCaptainState();
