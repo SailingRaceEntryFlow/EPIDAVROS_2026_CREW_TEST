@@ -1024,6 +1024,13 @@ function buildCrewTextForPdf() {
 }
 
     async function searchBoat() {
+      const acceptTerms = document.getElementById("acceptTermsCheck");
+
+if (acceptTerms && !acceptTerms.checked) {
+  alert("Παρακαλούμε αποδεχθείτε την Πολιτική Απορρήτου και τους Όρους Χρήσης για να συνεχίσετε.");
+  acceptTerms.scrollIntoView({ behavior: "smooth", block: "center" });
+  return;
+}
       const sailNumber = sailInput.value.trim();
 
       if (!sailNumber) {
@@ -1060,6 +1067,13 @@ setStatus("Η αναζήτηση ολοκληρώθηκε.");
     }
 
     function continueToForm() {
+      const acceptTerms = document.getElementById("acceptTermsCheck");
+
+if (acceptTerms && !acceptTerms.checked) {
+  alert("Παρακαλούμε αποδεχθείτε την Πολιτική Απορρήτου και τους Όρους Χρήσης για να συνεχίσετε.");
+  acceptTerms.scrollIntoView({ behavior: "smooth", block: "center" });
+  return;
+}
       if (!lastFoundData) {
         setStatus("Δεν υπάρχουν στοιχεία για συνέχεια.", true, false, true);
         return;
