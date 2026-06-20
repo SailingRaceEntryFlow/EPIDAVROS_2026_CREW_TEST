@@ -914,7 +914,7 @@ crewPdfRows.forEach((row, index) => {
     "\n";
 });
 
-params.set(fieldNames.crew_preview, crewPreview);
+params.set(fieldNames.crew_preview, crewTextForPreview);
 
 // Κρατάμε και όλο το πλήρωμα σε JSON για επόμενη φάση/πίνακα μέσα στη Jotform
 params.set(fieldNames.crew_json, JSON.stringify(
