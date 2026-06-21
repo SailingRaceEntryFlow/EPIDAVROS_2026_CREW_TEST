@@ -22,7 +22,7 @@
   }
 
     .page {
-      max-width: 1180px;
+      max-width: 980px;
       margin: 0 auto;
       padding: 16px;
     }
@@ -403,49 +403,7 @@
         height: 1300px;
       }
     }
-    .app-footer-note {
-  max-width: 760px;
-  margin: 26px auto 4px auto;
-  padding-top: 12px;
-  border-top: 1px solid rgba(122,108,98,0.35);
-  font-size: 12px;
-  line-height: 1.45;
-  text-align: center;
-  color: #5f5147;
-}
-
-.app-footer-note div {
-  margin: 2px 0;
-}
-/* ΚΑΘΑΡΟ ΠΛΑΤΟΣ ΓΙΑ ΤΗΝ ΕΝΣΩΜΑΤΩΜΕΝΗ JOTFORM */
-.page {
-  width: 100% !important;
-  max-width: 1500px !important;
-}
-
-.panel {
-  width: 100% !important;
-  max-width: 1350px !important;
-}
-
-#formWrap,
-.form-wrap {
-  width: 1200px !important;
-  max-width: calc(100vw - 80px) !important;
-  margin: 18px auto 0 auto !important;
-  padding: 0 !important;
-  overflow-x: visible !important;
-}
-
-#formFrame {
-  display: block !important;
-  width: 100% !important;
-  height: 1500px !important;
-  border: none !important;
-  background: #fff !important;
-  border-radius: 6px !important;
-}
-  
+    
   </style>
 </head>
 <body>
@@ -494,13 +452,22 @@
     </a>.
   </label>
 </div>
+<div style="font-size:13px; line-height:1.55; max-width:620px; margin:18px auto 8px auto; text-align:left; color:#5f5147;">
+  <div>© 2026 RegattaHub Race Management System</div>
+  <div>Σύστημα διαχείρισης συμμετοχών σε αγώνες ιστιοπλοΐας.</div>
+  <div style="margin-top:8px;">
+    Το λογισμικό και οι αυτοματισμοί του συστήματος παρέχονται με άδεια χρήσης και προστατεύονται από πνευματικά δικαιώματα.
+  </div>
+</div>
 <ul class="hero-notes" id="eventNotes" style="display:none;"></ul>
         </div>
       </div>
 
+     
+
       <div class="separator"></div>
 
-<div class="section-title" id="eventTitle" style="display:none;"></div>
+  <div class="section-title" id="eventTitle"></div>
 
       <div class="notice-box">
         <div class="line1">Η ΑΝΑΖΗΤΗΣΗ ΓΙΝΕΤΑΙ ΜΟΝΟ ΜΕ ΤΟΝ ΑΡΙΘΜΟ ΙΣΤΙΟΥ.</div>
@@ -528,12 +495,8 @@
       <div class="actions" id="actions"><button class="btn" id="continueBtn" type="button">ΚΑΤΑΧΩΡΗΣΗ ΠΛΗΡΩΜΑΤΟΣ</button>
         <button class="btn secondary" id="newSearchBtn" type="button">ΝΕΑ ΑΝΑΖΗΤΗΣΗ</button>
       </div>
-<div class="app-footer-note" id="appFooterNote">
-  <div>© 2026 RegattaHub Race Management System</div>
-  <div>Σύστημα διαχείρισης συμμετοχών σε αγώνες ιστιοπλοΐας.</div>
-  <div>Το λογισμικό και οι αυτοματισμοί του συστήματος παρέχονται με άδεια χρήσης και προστατεύονται από πνευματικά δικαιώματα.</div>
-</div>
-<div id="crewScreen" style="display:none; max-width:900px; margin:20px auto; border:1px solid #bfb6aa; padding:28px; background:white; text-align:center; border-radius:6px;">
+
+<div id="crewScreen" style="display:none; max-width:720px; margin:20px auto; border:1px solid #bfb6aa; padding:28px; background:white; text-align:center; border-radius:6px;">
 
   <h3 style="text-align:center;">ΣΤΟΙΧΕΙΑ ΚΥΒΕΡΝΗΤΗ ΚΑΙ ΠΛΗΡΩΜΑΤΟΣ</h3>
 
@@ -627,9 +590,9 @@
 
 </div>
 
-   <div class="form-wrap" id="formWrap" style="display:none; width:1200px !important; max-width:calc(100vw - 80px) !important; margin:18px auto 0 auto !important; padding:0 !important; overflow:visible !important;">
-  <iframe id="formFrame" src="" title="Καταχώριση συμμετοχής" style="display:block !important; width:100% !important; height:1500px !important; border:0 !important; border-radius:6px !important; background:#fff !important;"></iframe>
-</div>
+      <div class="form-wrap" id="formWrap">
+        <iframe id="formFrame" src="" title="Καταχώριση συμμετοχής"></iframe>
+      </div>
     </div>
   </div>
 
@@ -1018,7 +981,7 @@ function buildCrewTextForPdf() {
   }
 
 const AA_COL_WIDTH = 3;
-const NAME_COL_WIDTH = 27;
+const NAME_COL_WIDTH = 30;
 const CARD_COL_WIDTH = 10;
 const CLUB_COL_WIDTH = 32;
 const SEP = "  ";
@@ -1142,124 +1105,14 @@ if (wosr1 === wosr2) {
       console.log("JOTFORM PREFILL URL:", formUrl);
 //alert(buildCrewTextForPdf());
 
-   formFrame.onload = function () {
-  const hero = document.querySelector(".hero");
-  const separator = document.querySelector(".separator");
-  const eventTitle = document.getElementById("eventTitle");
-  const noticeBox = document.querySelector(".notice-box");
-  const searchArea = document.querySelector(".search-area");
-  const statusBox = document.getElementById("status");
-  const resultCard = document.getElementById("resultCard");
-  const actions = document.getElementById("actions");
-  const crewScreen = document.getElementById("crewScreen");
-  const appFooterNote = document.getElementById("appFooterNote");
+      formFrame.src = formUrl;
+      formWrap.style.display = "block";
 
-  [
-    hero,
-    separator,
-    eventTitle,
-    noticeBox,
-    searchArea,
-    statusBox,
-    resultCard,
-    actions,
-    crewScreen,
-    appFooterNote
-  ].forEach(function (el) {
-    if (el) el.style.display = "none";
-  });
-
-  document.querySelector(".page").style.maxWidth = "none";
-  document.querySelector(".page").style.width = "100%";
-  document.querySelector(".page").style.padding = "0";
-
-  document.querySelector(".panel").style.maxWidth = "none";
-  document.querySelector(".panel").style.width = "100%";
-  document.querySelector(".panel").style.padding = "0";
-  document.querySelector(".panel").style.background = "transparent";
-  document.querySelector(".panel").style.boxShadow = "none";
-
-  formWrap.style.display = "block";
-  formWrap.style.width = "100%";
-  formWrap.style.maxWidth = "none";
-  formWrap.style.margin = "0";
-  formWrap.style.padding = "0";
-
-  formFrame.style.width = "100%";
-  formFrame.style.height = "1600px";
-  formFrame.style.border = "0";
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
-
-sessionStorage.setItem("regattaJotformUrl", formUrl);
-window.location.href = window.location.origin + window.location.pathname + "?form=1";
-return;
-      
+      setTimeout(() => {
+        formWrap.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 250);
     }
-function showEmbeddedFormPageIfNeeded() {
-  const params = new URLSearchParams(window.location.search);
 
-  if (params.get("form") !== "1") {
-    return;
-  }
-
-  const savedFormUrl = sessionStorage.getItem("regattaJotformUrl");
-
-  const page = document.querySelector(".page");
-  const panel = document.querySelector(".panel");
-  const formWrapEl = document.getElementById("formWrap");
-  const formFrameEl = document.getElementById("formFrame");
-
-  if (!savedFormUrl || !formWrapEl || !formFrameEl) {
-    alert("Δεν βρέθηκαν τα στοιχεία της φόρμας. Παρακαλώ ξεκινήστε ξανά από την αρχική σελίδα.");
-    window.location.href = window.location.origin + window.location.pathname;
-    return;
-  }
-
-  if (panel) {
-    Array.from(panel.children).forEach(function(child) {
-      if (child !== formWrapEl) {
-        child.style.display = "none";
-      }
-    });
-  }
-
-  if (page) {
-    page.style.width = "100%";
-    page.style.maxWidth = "none";
-    page.style.margin = "0";
-    page.style.padding = "0";
-  }
-
-  if (panel) {
-    panel.style.width = "100%";
-    panel.style.maxWidth = "none";
-    panel.style.margin = "0";
-    panel.style.padding = "0";
-    panel.style.background = "transparent";
-    panel.style.boxShadow = "none";
-    panel.style.borderRadius = "0";
-  }
-
-  formWrapEl.style.display = "block";
-  formWrapEl.style.width = "100%";
-  formWrapEl.style.maxWidth = "none";
-  formWrapEl.style.margin = "0";
-  formWrapEl.style.padding = "0";
-  formWrapEl.style.overflow = "visible";
-
-  formFrameEl.style.display = "block";
-  formFrameEl.style.width = "100%";
-  formFrameEl.style.height = "1700px";
-  formFrameEl.style.border = "0";
-  formFrameEl.style.background = "#fff";
-
-  formFrameEl.src = savedFormUrl;
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-    showEmbeddedFormPageIfNeeded();
     function resetSearch() {
       localStorage.removeItem(STORAGE_KEY);
       sailInput.value = "";
@@ -1357,8 +1210,6 @@ function showEmbeddedFormPageIfNeeded() {
       document.querySelector(".hero").style.display = "none";
       document.querySelector(".separator").style.display = "none";
       document.getElementById("eventTitle").style.display = "none";
-      const appFooterNote = document.getElementById("appFooterNote");
-if (appFooterNote) appFooterNote.style.display = "none";
       document.querySelector(".notice-box").style.display = "none";
       document.querySelector(".search-area").style.display = "none";
       resultCard.style.display = "none";
