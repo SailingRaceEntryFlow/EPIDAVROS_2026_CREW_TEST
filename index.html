@@ -403,6 +403,20 @@
         height: 1300px;
       }
     }
+    .app-footer-note {
+  max-width: 760px;
+  margin: 26px auto 4px auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(122,108,98,0.35);
+  font-size: 12px;
+  line-height: 1.45;
+  text-align: center;
+  color: #5f5147;
+}
+
+.app-footer-note div {
+  margin: 2px 0;
+}
   </style>
 </head>
 <body>
@@ -451,22 +465,13 @@
     </a>.
   </label>
 </div>
-<div style="font-size:13px; line-height:1.55; max-width:620px; margin:18px auto 8px auto; text-align:left; color:#5f5147;">
-  <div>© 2026 RegattaHub Race Management System</div>
-  <div>Σύστημα διαχείρισης συμμετοχών σε αγώνες ιστιοπλοΐας.</div>
-  <div style="margin-top:8px;">
-    Το λογισμικό και οι αυτοματισμοί του συστήματος παρέχονται με άδεια χρήσης και προστατεύονται από πνευματικά δικαιώματα.
-  </div>
-</div>
 <ul class="hero-notes" id="eventNotes" style="display:none;"></ul>
         </div>
       </div>
 
-     
-
       <div class="separator"></div>
 
-  <div class="section-title" id="eventTitle"></div>
+<div class="section-title" id="eventTitle" style="display:none;"></div>
 
       <div class="notice-box">
         <div class="line1">Η ΑΝΑΖΗΤΗΣΗ ΓΙΝΕΤΑΙ ΜΟΝΟ ΜΕ ΤΟΝ ΑΡΙΘΜΟ ΙΣΤΙΟΥ.</div>
@@ -494,7 +499,11 @@
       <div class="actions" id="actions"><button class="btn" id="continueBtn" type="button">ΚΑΤΑΧΩΡΗΣΗ ΠΛΗΡΩΜΑΤΟΣ</button>
         <button class="btn secondary" id="newSearchBtn" type="button">ΝΕΑ ΑΝΑΖΗΤΗΣΗ</button>
       </div>
-
+<div class="app-footer-note" id="appFooterNote">
+  <div>© 2026 RegattaHub Race Management System</div>
+  <div>Σύστημα διαχείρισης συμμετοχών σε αγώνες ιστιοπλοΐας.</div>
+  <div>Το λογισμικό και οι αυτοματισμοί του συστήματος παρέχονται με άδεια χρήσης και προστατεύονται από πνευματικά δικαιώματα.</div>
+</div>
 <div id="crewScreen" style="display:none; max-width:720px; margin:20px auto; border:1px solid #bfb6aa; padding:28px; background:white; text-align:center; border-radius:6px;">
 
   <h3 style="text-align:center;">ΣΤΟΙΧΕΙΑ ΚΥΒΕΡΝΗΤΗ ΚΑΙ ΠΛΗΡΩΜΑΤΟΣ</h3>
@@ -1209,6 +1218,8 @@ if (wosr1 === wosr2) {
       document.querySelector(".hero").style.display = "none";
       document.querySelector(".separator").style.display = "none";
       document.getElementById("eventTitle").style.display = "none";
+      const appFooterNote = document.getElementById("appFooterNote");
+if (appFooterNote) appFooterNote.style.display = "none";
       document.querySelector(".notice-box").style.display = "none";
       document.querySelector(".search-area").style.display = "none";
       resultCard.style.display = "none";
