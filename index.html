@@ -1103,7 +1103,53 @@ setStatus("Η αναζήτηση ολοκληρώθηκε.");
         setStatus("Σφάλμα επικοινωνίας με το σύστημα αναζήτησης.", true, false, true);
       }
     }
+function showOnlyJotform() {
+  const page = document.querySelector(".page");
+  const panel = document.querySelector(".panel");
+  const formWrapEl = document.getElementById("formWrap");
+  const formFrameEl = document.getElementById("formFrame");
 
+  if (panel && formWrapEl) {
+    Array.from(panel.children).forEach(function(child) {
+      if (child !== formWrapEl) {
+        child.style.display = "none";
+      }
+    });
+  }
+
+  if (page) {
+    page.style.width = "100%";
+    page.style.maxWidth = "none";
+    page.style.padding = "0";
+    page.style.margin = "0";
+  }
+
+  if (panel) {
+    panel.style.width = "100%";
+    panel.style.maxWidth = "none";
+    panel.style.padding = "0";
+    panel.style.margin = "0";
+    panel.style.background = "transparent";
+    panel.style.boxShadow = "none";
+    panel.style.borderRadius = "0";
+  }
+
+  if (formWrapEl) {
+    formWrapEl.setAttribute(
+      "style",
+      "display:block !important; width:100% !important; max-width:none !important; margin:0 !important; padding:0 !important; overflow:visible !important;"
+    );
+  }
+
+  if (formFrameEl) {
+    formFrameEl.setAttribute(
+      "style",
+      "display:block !important; width:100% !important; height:1600px !important; border:0 !important; background:#fff !important;"
+    );
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
     function continueToForm() {
       const acceptTerms = document.getElementById("acceptTermsCheck");
 
@@ -1148,6 +1194,7 @@ if (wosr1 === wosr2) {
       setTimeout(() => {
         formWrap.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 250);
+      showOnlyJotform();
     }
 
     function resetSearch() {
