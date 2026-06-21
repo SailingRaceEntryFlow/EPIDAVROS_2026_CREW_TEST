@@ -437,6 +437,48 @@
     margin: 18px auto 0 auto !important;
   }
 }
+
+/* ΚΑΘΑΡΗ ΟΘΟΝΗ ΜΟΝΟ ΓΙΑ ΤΗ JOTFORM */
+body.form-only .panel > *:not(#formWrap) {
+  display: none !important;
+}
+
+body.form-only .page {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body.form-only .panel {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+body.form-only #formWrap,
+body.form-only .form-wrap {
+  display: block !important;
+  width: min(1120px, calc(100vw - 60px)) !important;
+  max-width: none !important;
+  margin: 18px auto 0 auto !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+body.form-only #formFrame {
+  display: block !important;
+  width: 100% !important;
+  height: 1700px !important;
+  border: 0 !important;
+  background: #fff !important;
+  border-radius: 6px !important;
+}
+    
   </style>
 </head>
 <body>
