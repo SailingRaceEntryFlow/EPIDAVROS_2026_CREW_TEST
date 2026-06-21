@@ -1192,11 +1192,74 @@ if (wosr1 === wosr2) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
-window.location.href = formUrl;
+sessionStorage.setItem("regattaJotformUrl", formUrl);
+window.location.href = window.location.origin + window.location.pathname + "?form=1";
 return;
       
     }
+function showEmbeddedFormPageIfNeeded() {
+  const params = new URLSearchParams(window.location.search);
 
+  if (params.get("form") !== "1") {
+    return;
+  }
+
+  const savedFormUrl = sessionStorage.getItem("regattaJotformUrl");
+
+  const page = document.querySelector(".page");
+  const panel = document.querySelector(".panel");
+  const formWrapEl = document.getElementById("formWrap");
+  const formFrameEl = document.getElementById("formFrame");
+
+  if (!savedFormUrl || !formWrapEl || !formFrameEl) {
+    alert("Δεν βρέθηκαν τα στοιχεία της φόρμας. Παρακαλώ ξεκινήστε ξανά από την αρχική σελίδα.");
+    window.location.href = window.location.origin + window.location.pathname;
+    return;
+  }
+
+  if (panel) {
+    Array.from(panel.children).forEach(function(child) {
+      if (child !== formWrapEl) {
+        child.style.display = "none";
+      }
+    });
+  }
+
+  if (page) {
+    page.style.width = "100%";
+    page.style.maxWidth = "none";
+    page.style.margin = "0";
+    page.style.padding = "0";
+  }
+
+  if (panel) {
+    panel.style.width = "100%";
+    panel.style.maxWidth = "none";
+    panel.style.margin = "0";
+    panel.style.padding = "0";
+    panel.style.background = "transparent";
+    panel.style.boxShadow = "none";
+    panel.style.borderRadius = "0";
+  }
+
+  formWrapEl.style.display = "block";
+  formWrapEl.style.width = "100%";
+  formWrapEl.style.maxWidth = "none";
+  formWrapEl.style.margin = "0";
+  formWrapEl.style.padding = "0";
+  formWrapEl.style.overflow = "visible";
+
+  formFrameEl.style.display = "block";
+  formFrameEl.style.width = "100%";
+  formFrameEl.style.height = "1700px";
+  formFrameEl.style.border = "0";
+  formFrameEl.style.background = "#fff";
+
+  formFrameEl.src = savedFormUrl;
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+    showEmbeddedFormPageIfNeeded();
     function resetSearch() {
       localStorage.removeItem(STORAGE_KEY);
       sailInput.value = "";
