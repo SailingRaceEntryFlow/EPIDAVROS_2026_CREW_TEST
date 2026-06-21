@@ -478,7 +478,71 @@ body.form-only #formFrame {
   background: #fff !important;
   border-radius: 6px !important;
 }
-    
+  /* ΤΕΛΙΚΗ ΚΑΘΑΡΗ ΟΘΟΝΗ JOTFORM */
+html.form-only-html,
+body.form-only {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+
+body.form-only .page {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  max-width: none !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #0f6d95 !important;
+  z-index: 9998 !important;
+}
+
+body.form-only .panel > *:not(#formWrap) {
+  display: none !important;
+}
+
+body.form-only .panel {
+  width: 100vw !important;
+  max-width: none !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+body.form-only #formWrap,
+body.form-only .form-wrap {
+  position: fixed !important;
+  top: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  display: block !important;
+  width: min(1120px, calc(100vw - 20px)) !important;
+  max-width: none !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  z-index: 9999 !important;
+  border-radius: 0 !important;
+}
+
+body.form-only #formFrame {
+  display: block !important;
+  width: 100% !important;
+  height: 100vh !important;
+  border: 0 !important;
+  background: #fff !important;
+  border-radius: 0 !important;
+}  
   </style>
 </head>
 <body>
@@ -1182,6 +1246,8 @@ if (wosr1 === wosr2) {
 
       formFrame.src = formUrl;
       formWrap.style.display = "block";
+      document.body.classList.add("form-only");
+document.documentElement.classList.add("form-only-html");
 
       setTimeout(() => {
         formWrap.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1195,6 +1261,7 @@ if (wosr1 === wosr2) {
       hideResult();
       sailInput.focus();
       window.scrollTo({ top: 0, behavior: "smooth" });
+      
     }
 
     function getCaptainState() {
