@@ -403,7 +403,40 @@
         height: 1300px;
       }
     }
-    
+    /* ΜΟΝΟ ΤΟ ΠΛΑΙΣΙΟ ΤΗΣ JOTFORM - ΦΑΡΔΥ ΚΑΙ ΚΕΝΤΡΑΡΙΣΜΕΝΟ */
+#formWrap,
+.form-wrap {
+  width: min(1120px, calc(100vw - 60px)) !important;
+  max-width: none !important;
+  margin: 22px auto 0 auto !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  position: relative !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+
+#formFrame {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  height: 1700px !important;
+  border: 0 !important;
+  background: #fff !important;
+  border-radius: 6px !important;
+}
+
+@media screen and (max-width: 768px) {
+  #formWrap,
+  .form-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    left: auto !important;
+    transform: none !important;
+    margin: 18px auto 0 auto !important;
+  }
+}
   </style>
 </head>
 <body>
