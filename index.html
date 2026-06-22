@@ -632,6 +632,36 @@ body.form-only #formFrame {
     min-width: 0 !important;
   }
 }
+    /* JOTFORM ΩΣ ΣΤΑΘΕΡΟ ΠΑΡΑΘΥΡΟ ΠΑΝΩ ΑΠΟ ΤΗ ΣΕΛΙΔΑ */
+body.jotform-open {
+  overflow: hidden !important;
+}
+
+body.jotform-open #formWrap,
+body.jotform-open .form-wrap {
+  position: fixed !important;
+  top: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: min(1120px, calc(100vw - 20px)) !important;
+  max-width: none !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  z-index: 999999 !important;
+  background: #fff !important;
+  border-radius: 0 !important;
+}
+
+body.jotform-open #formFrame {
+  display: block !important;
+  width: 100% !important;
+  height: 100vh !important;
+  border: 0 !important;
+  background: #fff !important;
+  border-radius: 0 !important;
+}
   </style>
 </head>
 <body>
