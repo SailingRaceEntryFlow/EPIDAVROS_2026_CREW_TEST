@@ -543,6 +543,95 @@ body.form-only #formFrame {
   background: #fff !important;
   border-radius: 0 !important;
 }  
+    /* ΔΙΟΡΘΩΣΗ ΕΜΦΑΝΙΣΗΣ ΣΕ ΚΙΝΗΤΟ */
+@media screen and (max-width: 768px) {
+
+  html,
+  body {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .page {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 6px !important;
+    margin: 0 !important;
+  }
+
+  .panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 10px !important;
+    margin: 0 auto !important;
+    overflow-x: hidden !important;
+  }
+
+  #crewScreen {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 12px 6px !important;
+    margin: 12px auto !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  #crewScreen input,
+  #crewScreen textarea,
+  #crewScreen select {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  #crewScreen textarea {
+    width: 100% !important;
+  }
+
+  #crewScreen table {
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
+    font-size: 12px !important;
+  }
+
+  #crewScreen th,
+  #crewScreen td {
+    padding: 5px 3px !important;
+    font-size: 12px !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  #crewScreen button,
+  #crewScreen .btn {
+    max-width: 100% !important;
+    font-size: 12px !important;
+    padding: 8px 6px !important;
+    white-space: normal !important;
+  }
+
+  #crewScreen h3 {
+    font-size: 18px !important;
+    line-height: 1.25 !important;
+  }
+
+  #formWrap,
+  .form-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 14px auto 0 auto !important;
+    left: auto !important;
+    transform: none !important;
+    overflow-x: hidden !important;
+  }
+
+  #formFrame {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+}
   </style>
 </head>
 <body>
