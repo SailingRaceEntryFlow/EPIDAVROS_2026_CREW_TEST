@@ -662,6 +662,41 @@ body.jotform-open #formFrame {
   background: #fff !important;
   border-radius: 0 !important;
 }
+    /* JOTFORM ΣΤΑΘΕΡΗ - ΚΛΕΙΔΩΜΑ SCROLL ΣΕΛΙΔΑΣ */
+html.jotform-open-html,
+body.jotform-open {
+  overflow: hidden !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body.jotform-open #formWrap,
+body.jotform-open .form-wrap {
+  position: fixed !important;
+  top: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: min(1120px, calc(100vw - 20px)) !important;
+  max-width: none !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  z-index: 999999 !important;
+  background: #fff !important;
+  border-radius: 0 !important;
+}
+
+body.jotform-open #formFrame {
+  display: block !important;
+  width: 100% !important;
+  height: 100vh !important;
+  border: 0 !important;
+  background: #fff !important;
+  border-radius: 0 !important;
+}
   </style>
 </head>
 <body>
@@ -1363,15 +1398,13 @@ if (wosr1 === wosr2) {
       console.log("JOTFORM PREFILL URL:", formUrl);
 //alert(buildCrewTextForPdf());
 
-      formFrame.src = formUrl;
-      formWrap.style.display = "block";
-      
+ formFrame.src = formUrl;
+formWrap.style.display = "block";
 
+document.body.classList.add("jotform-open");
+document.documentElement.classList.add("jotform-open-html");
 
-      setTimeout(() => {
-        formWrap.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 250);
-    }
+window.scrollTo({ top: 0, behavior: "auto" });
 
     function resetSearch() {
       localStorage.removeItem(STORAGE_KEY);
