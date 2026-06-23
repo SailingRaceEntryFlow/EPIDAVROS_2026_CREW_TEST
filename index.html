@@ -1217,13 +1217,22 @@ crewPdfRows.forEach((row, index) => {
 params.set(fieldNames.crew_preview, crewTextForPreview);
 
 // Κρατάμε και όλο το πλήρωμα σε JSON για επόμενη φάση/πίνακα μέσα στη Jotform
-params.set(fieldNames.crew_json, JSON.stringify(
+const crewJsonText = JSON.stringify(
   crewPdfRows.map((row) => ({
     name: row.name || "",
     card: row.card || "",
     club: shortClubName(row.club || "")
   }))
-));
+);
+
+params.set(fieldNames.crew_json, crewJsonText);
+
+// ΔΟΚΙΜΗ νέων πεδίων αλλαγής πληρώματος
+params.set(fieldNames.crew_edit_mode, "TEST_CREW_EDIT");
+params.set(fieldNames.crew_json_before, "");
+params.set(fieldNames.crew_json_after, crewJsonText);
+params.set(fieldNames.crew_change_text, "ΔΟΚΙΜΗ ΠΕΔΙΩΝ ΑΛΛΑΓΗΣ ΠΛΗΡΩΜΑΤΟΣ");
+params.set(fieldNames.crew_change_date, new Date().toLocaleDateString("el-GR"));
 
   return JOTFORM_BASE_URL + "?" + Array.from(params.entries())
     .map(([key, value]) => encodeURIComponent(key) + "=" + encodeURIComponent(value))
