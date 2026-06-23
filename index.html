@@ -1128,7 +1128,10 @@ function getCrewPdfRows() {
 
   return rows;
 }
-
+function isCrewEditMode() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("crewEdit") === "1" || params.get("editCrew") === "1";
+}
 function buildPrefillUrl(data) {
   const params = new URLSearchParams();
 
@@ -1227,12 +1230,14 @@ const crewJsonText = JSON.stringify(
 
 params.set(fieldNames.crew_json, crewJsonText);
 
-// ΔΟΚΙΜΗ νέων πεδίων αλλαγής πληρώματος
-params.set(fieldNames.crew_edit_mode, "TEST_CREW_EDIT");
-params.set(fieldNames.crew_json_before, "");
-params.set(fieldNames.crew_json_after, crewJsonText);
-params.set(fieldNames.crew_change_text, "ΔΟΚΙΜΗ ΠΕΔΙΩΝ ΑΛΛΑΓΗΣ ΠΛΗΡΩΜΑΤΟΣ");
-params.set(fieldNames.crew_change_date, new Date().toLocaleDateString("el-GR"));
+const crewEditMode = isCrewEditMode();
+const oldCrewJsonText = localStorage.getItem("CREW_JSON_BEFORE_EDIT") || "";
+
+params.set(fieldNames.crew_edit_mode, crewEditMode ? "CREW_EDIT" : "");
+params.set(fieldNames.crew_json_before, crewEditMode ? oldCrewJsonText : "");
+params.set(fieldNames.crew_json_after, crewEditMode ? crewJsonText : "");
+params.set(fieldNames.crew_change_text, crewEditMode ? "ΑΛΛΑΓΗ ΠΛΗΡΩΜΑΤΟΣ" : "");
+params.set(fieldNames.crew_change_date, crewEditMode ? new Date().toLocaleDateString("el-GR") : "");
 
   return JOTFORM_BASE_URL + "?" + Array.from(params.entries())
     .map(([key, value]) => encodeURIComponent(key) + "=" + encodeURIComponent(value))
