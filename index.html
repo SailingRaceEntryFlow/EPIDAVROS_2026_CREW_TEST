@@ -21,7 +21,6 @@
     font-family: "Courier New", monospace;
   }
 
-    
     .page {
       max-width: 980px;
       margin: 0 auto;
@@ -1034,7 +1033,7 @@ crew_change_date: "crew_change_date"
     const formFrame = document.getElementById("formFrame");
 
     let lastFoundData = null;
-let crewEditModeActive = false;
+
     function scrollToElement(el) {
       if (!el) return;
       setTimeout(() => {
@@ -1129,15 +1128,7 @@ function getCrewPdfRows() {
 
   return rows;
 }
-function isCrewEditMode() {
-  const params = new URLSearchParams(window.location.search);
 
-  return (
-    crewEditModeActive ||
-    params.get("crewEdit") === "1" ||
-    params.get("editCrew") === "1"
-  );
-}
 function buildPrefillUrl(data) {
   const params = new URLSearchParams();
 
@@ -1226,24 +1217,13 @@ crewPdfRows.forEach((row, index) => {
 params.set(fieldNames.crew_preview, crewTextForPreview);
 
 // Κρατάμε και όλο το πλήρωμα σε JSON για επόμενη φάση/πίνακα μέσα στη Jotform
-const crewJsonText = JSON.stringify(
+params.set(fieldNames.crew_json, JSON.stringify(
   crewPdfRows.map((row) => ({
     name: row.name || "",
     card: row.card || "",
     club: shortClubName(row.club || "")
   }))
-);
-
-params.set(fieldNames.crew_json, crewJsonText);
-
-const crewEditMode = isCrewEditMode();
-const oldCrewJsonText = localStorage.getItem("CREW_JSON_BEFORE_EDIT") || "";
-
-params.set(fieldNames.crew_edit_mode, crewEditMode ? "CREW_EDIT" : "");
-params.set(fieldNames.crew_json_before, crewEditMode ? oldCrewJsonText : "");
-params.set(fieldNames.crew_json_after, crewEditMode ? crewJsonText : "");
-params.set(fieldNames.crew_change_text, crewEditMode ? "ΑΛΛΑΓΗ ΠΛΗΡΩΜΑΤΟΣ" : "");
-params.set(fieldNames.crew_change_date, crewEditMode ? new Date().toLocaleDateString("el-GR") : "");
+));
 
   return JOTFORM_BASE_URL + "?" + Array.from(params.entries())
     .map(([key, value]) => encodeURIComponent(key) + "=" + encodeURIComponent(value))
@@ -1514,42 +1494,15 @@ window.scrollTo({ top: 0, behavior: "auto" });
       }, 200);
     }
 
- function handleCrewEditReturn() {
-  const params = new URLSearchParams(window.location.search);
+    function handleCrewEditReturn() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("crewEdit") === "1") {
+        restoreEntryState();
 
-  const isReturnForCrewEdit =
-    params.get("crewEdit") === "1" || params.get("editCrew") === "1";
-
-  if (!isReturnForCrewEdit) return;
-
-  crewEditModeActive = true;
-
-  const saved = localStorage.getItem(STORAGE_KEY);
-
-  if (saved) {
-    try {
-      const state = JSON.parse(saved);
-
-      const beforeCrewJson = JSON.stringify(
-        (state.crew || []).map((row) => ({
-          name: row.name || "",
-          card: row.card || "",
-          club: shortClubName(row.club || "")
-        }))
-      );
-
-      localStorage.setItem("CREW_JSON_BEFORE_EDIT", beforeCrewJson);
-    } catch (err) {
-      console.error("Δεν ήταν δυνατή η αποθήκευση του αρχικού πληρώματος:", err);
+        // Καθαρίζουμε τη διεύθυνση ώστε μετά από ανανέωση να μη μπαίνει ξανά αυτόματα σε edit.
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
     }
-  }
-
-  restoreEntryState();
-
-  // Καθαρίζουμε τη διεύθυνση ώστε μετά από ανανέωση να μη μπαίνει ξανά αυτόματα σε edit,
-  // αλλά κρατάμε τη μνήμη crewEditModeActive = true.
-  window.history.replaceState({}, document.title, window.location.pathname);
-}
 
     setupHero();
 
