@@ -1164,12 +1164,11 @@ function buildPrefillUrl(data) {
   params.set(fieldNames.captain_name, document.querySelector("#crewScreen .name")?.innerText || "");
   params.set(fieldNames.captain_club, document.querySelector("#crewScreen .club")?.innerText || "");
   params.set(fieldNames.captain_card, document.querySelector("#crewScreen input")?.value || "");
- const crewTextForPreview = buildCrewTextForPdf();
- params.set(fieldNames.crew_text, crewTextForPreview);
+const crewTextForPreview = buildCrewTextForPdf();
 
- // Το ίδιο κείμενο το στέλνουμε και με καθαρό Unique Name,
- // ώστε να μπορεί να γεμίσει ένα πεδίο Long Text με Unique Name: crew_text
- params.set("crew_text", crewTextForPreview);
+// ΔΕΝ το στέλνουμε στο URL γιατί μεγαλώνει πολύ και προκαλεί 414 Request-URI Too Large.
+// params.set(fieldNames.crew_text, crewTextForPreview);
+// params.set("crew_text", crewTextForPreview);
 
   const crewPdfRows = getCrewPdfRows();
 const crewPdfAA = [];
@@ -1204,14 +1203,16 @@ function getWosrName(value) {
 params.set(fieldNames.wosr_member_1, getWosrName(wosr1Value));
 params.set(fieldNames.wosr_member_2, getWosrName(wosr2Value));
   
-for (let i = 1; i <= 10; i++) {
+/*
+  for (let i = 1; i <= 10; i++) {
   const row = crewPdfRows[i - 1] || {};
 
   params.set(fieldNames[`crew_${i}_name`], row.name || "");
   params.set(fieldNames[`crew_${i}_card`], row.card || "");
   params.set(fieldNames[`crew_${i}_club`], shortClubName(row.club || ""));
 }
-
+*/
+  
 let crewPreview = "";
 
 crewPdfRows.forEach((row, index) => {
@@ -1223,7 +1224,7 @@ crewPdfRows.forEach((row, index) => {
     "\n";
 });
 
-params.set(fieldNames.crew_preview, crewTextForPreview);
+//params.set(fieldNames.crew_preview, crewTextForPreview);
 
 // Κρατάμε και όλο το πλήρωμα σε JSON για επόμενη φάση/πίνακα μέσα στη Jotform
 const crewJsonText = JSON.stringify(
@@ -1234,10 +1235,14 @@ const crewJsonText = JSON.stringify(
   }))
 );
 
-params.set(fieldNames.crew_json, crewJsonText);
-
 const crewEditMode = isCrewEditMode();
 const oldCrewJsonText = localStorage.getItem("CREW_JSON_BEFORE_EDIT") || "";
+
+// Το crew_json το στέλνουμε μόνο σε αλλαγή πληρώματος.
+// Στην αρχική υποβολή μεγαλώνει άσκοπα το URL.
+if (crewEditMode) {
+  params.set(fieldNames.crew_json, crewJsonText);
+}
 
 params.set(fieldNames.crew_edit_mode, crewEditMode ? "CREW_EDIT" : "");
 params.set(fieldNames.crew_json_before, crewEditMode ? oldCrewJsonText : "");
@@ -1245,6 +1250,12 @@ params.set(fieldNames.crew_json_after, crewEditMode ? crewJsonText : "");
 params.set(fieldNames.crew_change_text, crewEditMode ? "ΑΛΛΑΓΗ ΠΛΗΡΩΜΑΤΟΣ" : "");
 params.set(fieldNames.crew_change_date, crewEditMode ? new Date().toLocaleDateString("el-GR") : "");
 
+  // Αφαιρούμε άδεια πεδία για να μικρύνει το URL.
+for (const [key, value] of Array.from(params.entries())) {
+  if (String(value || "").trim() === "") {
+    params.delete(key);
+  }
+}
   return JOTFORM_BASE_URL + "?" + Array.from(params.entries())
     .map(([key, value]) => encodeURIComponent(key) + "=" + encodeURIComponent(value))
     .join("&");
