@@ -1451,15 +1451,17 @@ window.scrollTo({ top: 0, behavior: "auto" });
       };
     }
 
-    function saveEntryState() {
-      const state = {
-        boat: lastFoundData || null,
-        captain: getCaptainState(),
-        crew: getCrewPdfRows()
-      };
+function saveEntryState() {
+  const state = {
+    boat: lastFoundData || null,
+    captain: getCaptainState(),
+    crew: getCrewPdfRows(),
+    wosr1: document.getElementById("wosrMember1")?.value || "",
+    wosr2: document.getElementById("wosrMember2")?.value || ""
+  };
 
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
 
     function restoreEntryState() {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -1498,13 +1500,21 @@ window.scrollTo({ top: 0, behavior: "auto" });
       document.getElementById("crewSection").style.display = "block";
       document.getElementById("crewList").innerHTML = "";
 
-      (state.crew || []).forEach((member) => {
-        addCrewMemberFromData(member);
-      });
+  (state.crew || []).forEach((member) => {
+  addCrewMemberFromData(member);
+});
 
-      if ((state.crew || []).length > 0) {
-        document.getElementById("continueToJotformBtn").style.display = "inline-block";
-      }
+refreshWosrSelectors();
+
+const wosr1Select = document.getElementById("wosrMember1");
+const wosr2Select = document.getElementById("wosrMember2");
+
+if (wosr1Select) wosr1Select.value = state.wosr1 || "";
+if (wosr2Select) wosr2Select.value = state.wosr2 || "";
+
+if ((state.crew || []).length > 0) {
+  document.getElementById("continueToJotformBtn").style.display = "inline-block";
+}
 
       setTimeout(() => {
         document.getElementById("crewScreen").scrollIntoView({
