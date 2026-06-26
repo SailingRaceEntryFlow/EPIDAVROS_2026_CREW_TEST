@@ -21,7 +21,6 @@
     font-family: "Courier New", monospace;
   }
 
-    
     .page {
       max-width: 980px;
       margin: 0 auto;
@@ -1014,13 +1013,7 @@ crew_pdf_card: "crewpdf_card",
 crew_pdf_club: "crewpdf_club",
 
 wosr_member_1: "wosr_member_1",
-wosr_member_2: "wosr_member_2",
-
-crew_edit_mode: "crew_edit_mode",
-crew_json_before: "crew_json_before",
-crew_json_after: "crew_json_after",
-crew_change_text: "crew_change_text",
-crew_change_date: "crew_change_date"
+wosr_member_2: "wosr_member_2"
     };
 
     const sailInput = document.getElementById("sailNumber");
@@ -1033,10 +1026,8 @@ crew_change_date: "crew_change_date"
     const formWrap = document.getElementById("formWrap");
     const formFrame = document.getElementById("formFrame");
 
- let lastFoundData = null;
-let crewEditModeActive = false;
-let jotformEditUrlForReturn = "";
-    
+    let lastFoundData = null;
+
     function scrollToElement(el) {
       if (!el) return;
       setTimeout(() => {
@@ -1131,55 +1122,7 @@ function getCrewPdfRows() {
 
   return rows;
 }
-function isCrewEditMode() {
-  const params = new URLSearchParams(window.location.search);
 
-  return (
-    crewEditModeActive ||
-    params.get("crewEdit") === "1" ||
-    params.get("editCrew") === "1"
-  );
-}
-
-function resolveJotformEditUrlFromParams(params) {
-  const editUrl = String(params.get("editUrl") || "").trim();
-
-  if (editUrl) {
-    return editUrl;
-  }
-
-  const submissionId = String(
-    params.get("submissionId") ||
-    params.get("sid") ||
-    ""
-  ).trim();
-
-  if (submissionId) {
-    return "https://www.jotform.com/edit/" + encodeURIComponent(submissionId);
-  }
-
-  return "";
-}
-
-function getJotformEditUrlForReturn() {
-  const params = new URLSearchParams(window.location.search);
-
-  return (
-    jotformEditUrlForReturn ||
-    resolveJotformEditUrlFromParams(params)
-  );
-}
-
-function appendParamsToUrl(baseUrl, params) {
-  const query = Array.from(params.entries())
-    .map(([key, value]) => encodeURIComponent(key) + "=" + encodeURIComponent(value))
-    .join("&");
-
-  if (!query) return baseUrl;
-
-  return baseUrl + (baseUrl.includes("?") ? "&" : "?") + query;
-}
-    
 function buildPrefillUrl(data) {
   const params = new URLSearchParams();
 
@@ -1268,71 +1211,17 @@ crewPdfRows.forEach((row, index) => {
 params.set(fieldNames.crew_preview, crewTextForPreview);
 
 // Κρατάμε και όλο το πλήρωμα σε JSON για επόμενη φάση/πίνακα μέσα στη Jotform
-const crewJsonText = JSON.stringify(
+params.set(fieldNames.crew_json, JSON.stringify(
   crewPdfRows.map((row) => ({
     name: row.name || "",
     card: row.card || "",
     club: shortClubName(row.club || "")
   }))
-);
+));
 
-params.set(fieldNames.crew_json, crewJsonText);
-
-const crewEditMode = isCrewEditMode();
-const oldCrewJsonText = localStorage.getItem("CREW_JSON_BEFORE_EDIT") || "";
-
-params.set(fieldNames.crew_edit_mode, crewEditMode ? "CREW_EDIT" : "");
-params.set(fieldNames.crew_json_before, crewEditMode ? oldCrewJsonText : "");
-params.set(fieldNames.crew_json_after, crewEditMode ? crewJsonText : "");
-params.set(fieldNames.crew_change_text, crewEditMode ? "ΑΛΛΑΓΗ ΠΛΗΡΩΜΑΤΟΣ" : "");
-params.set(fieldNames.crew_change_date, crewEditMode ? new Date().toLocaleDateString("el-GR") : "");
-
-// Αν είμαστε σε αλλαγή πληρώματος, δεν ανοίγουμε νέα φόρμα.
-// Ανοίγουμε το υπάρχον Jotform Edit URL και περνάμε ΜΟΝΟ τα πεδία πληρώματος.
-if (crewEditMode) {
-  const editUrl = getJotformEditUrlForReturn();
-
-  if (!editUrl) {
-    alert("Δεν βρέθηκε το Submission Edit URL. Η αλλαγή πληρώματος πρέπει να ξεκινήσει από link που περιέχει editUrl ή submissionId.");
-    return "";
-  }
-
-  const editParams = new URLSearchParams();
-
-  editParams.set(fieldNames.crew_text, crewTextForPreview);
-  editParams.set("crew_text", crewTextForPreview);
-
-  editParams.set(fieldNames.crew_pdf_aa, crewPdfAA.join("\n"));
-  editParams.set(fieldNames.crew_pdf_name, crewPdfName.join("\n"));
-  editParams.set(fieldNames.crew_pdf_card, crewPdfCard.join("\n"));
-  editParams.set(fieldNames.crew_pdf_club, crewPdfClub.join("\n"));
-
-  editParams.set(fieldNames.wosr_member_1, getWosrName(wosr1Value));
-  editParams.set(fieldNames.wosr_member_2, getWosrName(wosr2Value));
-
-  for (let i = 1; i <= 10; i++) {
-    const row = crewPdfRows[i - 1] || {};
-
-    editParams.set(fieldNames[`crew_${i}_name`], row.name || "");
-    editParams.set(fieldNames[`crew_${i}_card`], row.card || "");
-    editParams.set(fieldNames[`crew_${i}_club`], shortClubName(row.club || ""));
-  }
-
-  editParams.set(fieldNames.crew_preview, crewTextForPreview);
-  editParams.set(fieldNames.crew_json, crewJsonText);
-
-  editParams.set(fieldNames.crew_edit_mode, "CREW_EDIT");
-  editParams.set(fieldNames.crew_json_before, oldCrewJsonText);
-  editParams.set(fieldNames.crew_json_after, crewJsonText);
-  editParams.set(fieldNames.crew_change_text, "ΑΛΛΑΓΗ ΠΛΗΡΩΜΑΤΟΣ");
-  editParams.set(fieldNames.crew_change_date, new Date().toLocaleDateString("el-GR"));
-
-  return appendParamsToUrl(editUrl, editParams);
-}
-
-return JOTFORM_BASE_URL + "?" + Array.from(params.entries())
-  .map(([key, value]) => encodeURIComponent(key) + "=" + encodeURIComponent(value))
-  .join("&");
+  return JOTFORM_BASE_URL + "?" + Array.from(params.entries())
+    .map(([key, value]) => encodeURIComponent(key) + "=" + encodeURIComponent(value))
+    .join("&");
 }
 
 function shortClubName(club) {
@@ -1504,12 +1393,9 @@ if (wosr1 === wosr2) {
 }
       saveEntryState();
 
-     const formUrl = buildPrefillUrl(lastFoundData);
-
-if (!formUrl) return;
-
-console.log("ΠΛΗΡΩΜΑ ΠΟΥ ΘΑ ΣΤΑΛΕΙ:", crewRowsForCheck);
-console.log("JOTFORM PREFILL URL:", formUrl);
+      const formUrl = buildPrefillUrl(lastFoundData);
+      console.log("ΠΛΗΡΩΜΑ ΠΟΥ ΘΑ ΣΤΑΛΕΙ:", crewRowsForCheck);
+      console.log("JOTFORM PREFILL URL:", formUrl);
 //alert(buildCrewTextForPdf());
 
  formFrame.src = formUrl;
@@ -1539,17 +1425,15 @@ window.scrollTo({ top: 0, behavior: "auto" });
       };
     }
 
-function saveEntryState() {
-  const state = {
-    boat: lastFoundData || null,
-    captain: getCaptainState(),
-    crew: getCrewPdfRows(),
-    wosr1: document.getElementById("wosrMember1")?.value || "",
-    wosr2: document.getElementById("wosrMember2")?.value || ""
-  };
+    function saveEntryState() {
+      const state = {
+        boat: lastFoundData || null,
+        captain: getCaptainState(),
+        crew: getCrewPdfRows()
+      };
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
 
     function restoreEntryState() {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -1588,21 +1472,13 @@ function saveEntryState() {
       document.getElementById("crewSection").style.display = "block";
       document.getElementById("crewList").innerHTML = "";
 
-  (state.crew || []).forEach((member) => {
-  addCrewMemberFromData(member);
-});
+      (state.crew || []).forEach((member) => {
+        addCrewMemberFromData(member);
+      });
 
-refreshWosrSelectors();
-
-const wosr1Select = document.getElementById("wosrMember1");
-const wosr2Select = document.getElementById("wosrMember2");
-
-if (wosr1Select) wosr1Select.value = state.wosr1 || "";
-if (wosr2Select) wosr2Select.value = state.wosr2 || "";
-
-if ((state.crew || []).length > 0) {
-  document.getElementById("continueToJotformBtn").style.display = "inline-block";
-}
+      if ((state.crew || []).length > 0) {
+        document.getElementById("continueToJotformBtn").style.display = "inline-block";
+      }
 
       setTimeout(() => {
         document.getElementById("crewScreen").scrollIntoView({
@@ -1612,43 +1488,15 @@ if ((state.crew || []).length > 0) {
       }, 200);
     }
 
- function handleCrewEditReturn() {
-  const params = new URLSearchParams(window.location.search);
+    function handleCrewEditReturn() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("crewEdit") === "1") {
+        restoreEntryState();
 
-  const isReturnForCrewEdit =
-    params.get("crewEdit") === "1" || params.get("editCrew") === "1";
-
-  if (!isReturnForCrewEdit) return;
-
-  crewEditModeActive = true;
-jotformEditUrlForReturn = resolveJotformEditUrlFromParams(params);
-   
-  const saved = localStorage.getItem(STORAGE_KEY);
-
-  if (saved) {
-    try {
-      const state = JSON.parse(saved);
-
-      const beforeCrewJson = JSON.stringify(
-        (state.crew || []).map((row) => ({
-          name: row.name || "",
-          card: row.card || "",
-          club: shortClubName(row.club || "")
-        }))
-      );
-
-      localStorage.setItem("CREW_JSON_BEFORE_EDIT", beforeCrewJson);
-    } catch (err) {
-      console.error("Δεν ήταν δυνατή η αποθήκευση του αρχικού πληρώματος:", err);
+        // Καθαρίζουμε τη διεύθυνση ώστε μετά από ανανέωση να μη μπαίνει ξανά αυτόματα σε edit.
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
     }
-  }
-
-  restoreEntryState();
-
-  // Καθαρίζουμε τη διεύθυνση ώστε μετά από ανανέωση να μη μπαίνει ξανά αυτόματα σε edit,
-  // αλλά κρατάμε τη μνήμη crewEditModeActive = true.
-  window.history.replaceState({}, document.title, window.location.pathname);
-}
 
     setupHero();
 
