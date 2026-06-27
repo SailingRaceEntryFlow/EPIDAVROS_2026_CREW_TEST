@@ -823,20 +823,22 @@ body.jotform-open #formFrame {
   </div>
 
 <div id="crewSection" style="display:none;">
-<strong>ΑΛΛΑΓΕΣ ΠΛΗΡΩΜΑΤΟΣ</strong>
+<strong>ΑΘΛΗΤΕΣ ΠΟΥ ΠΡΟΣΤΙΘΕΝΤΑΙ</strong>
 
   <div style="font-size:14px; margin:6px 0 10px 0;">
-    Μπορείτε είτε να βάλετε τα δελτία ένα-ένα, είτε να επικολλήσετε πολλούς αριθμούς μαζί και να πατήσετε <strong>ΑΝΑΖΗΤΗΣΗ ΟΛΩΝ</strong>.
+  Συμπληρώστε τα δελτία των νέων αθλητών που προστίθενται στο πλήρωμα. Για αυτά τα δελτία θα γίνει έλεγχος εγκυρότητας.
   </div>
 
   <textarea
     id="bulkCrewCards"
-    placeholder="Επικολλήστε εδώ τους αριθμούς δελτίων, έναν ανά γραμμή ή χωρισμένους με κενό, κόμμα ή tab"
+   <textarea
+  id="bulkCrewCards"
+  placeholder="Επικολλήστε εδώ τους αριθμούς δελτίων, έναν ανά γραμμή ή χωρισμένους με κενό, κόμμα ή tab"
     style="width:100%; height:105px; font-size:16px; padding:8px; margin:8px 0 8px 0; font-family:Arial, sans-serif;"
   ></textarea>
 
   <button class="btn" type="button" onclick="lookupBulkCrewCards()" style="margin-bottom:10px;">
-    ΑΝΑΖΗΤΗΣΗ ΟΛΩΝ
+    ΕΛΕΓΧΟΣ ΝΕΩΝ ΔΕΛΤΙΩΝ
   </button>
 
   <div style="font-size:13px; color:#5f5147; margin-bottom:10px;">
@@ -847,10 +849,22 @@ body.jotform-open #formFrame {
 
 <div id="addCrewButtonBox" style="text-align:center; margin:12px 0 14px 0;">
   <button class="btn secondary" type="button" onclick="addCrewMemberSafe()">
-    + Προσθήκη μέλους
+  + Προσθήκη νέου αθλητή
   </button>
 </div>
+<div id="removedCrewSection" style="margin:24px auto 18px auto; padding:16px; border:1px solid #bfb6aa; background:#fffdf5; max-width:620px; text-align:center;">
+  <strong>ΑΘΛΗΤΕΣ ΠΟΥ ΑΦΑΙΡΟΥΝΤΑΙ</strong>
 
+  <div style="font-size:14px; margin:8px 0 10px 0;">
+    Συμπληρώστε τους αθλητές που αφαιρούνται από το πλήρωμα. Για αυτά τα δελτία δεν γίνεται έλεγχος εγκυρότητας.
+  </div>
+
+  <textarea
+    id="removedCrewText"
+    placeholder="Γράψτε εδώ τους αθλητές που αφαιρούνται, έναν ανά γραμμή. Μπορείτε να βάλετε όνομα ή/και αριθμό δελτίου."
+    style="width:100%; height:105px; font-size:16px; padding:8px; margin:8px 0 8px 0; font-family:Arial, sans-serif;"
+  ></textarea>
+</div>
 <div id="wosrSelectBox" style="display:none; margin:16px auto 10px auto; padding:12px; border:1px solid #bfb6aa; background:#f8f8f8; max-width:620px; text-align:left;">
   <div style="font-weight:bold; text-align:center; margin-bottom:10px;">
     ΕΞΟΙΚΕΙΩΜΕΝΑ ΜΕΛΗ ΠΛΗΡΩΜΑΤΟΣ ΜΕ ΤΙΣ ΔΙΑΔΙΚΑΣΙΕΣ WS OSR 6.05.3
