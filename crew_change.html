@@ -1606,8 +1606,7 @@ async function lookupPerson(input) {
   refreshWosrSelectors();
 
   try {
-    const res = await fetch(PERSON_LOOKUP_URL + "?id=" + encodeURIComponent(cleanId));
-    const json = await res.json();
+  const json = await fetchPersonLookupJsonp(cleanId);
 
     row.dataset.checkedCard = cleanId;
 
@@ -1677,7 +1676,48 @@ async function lookupPerson(input) {
     }
   }
 }
+function fetchPersonLookupJsonp(id) {
+  return new Promise((resolve, reject) => {
+    const callbackName =
+      "personLookupCallback_" +
+      Date.now() +
+      "_" +
+      Math.floor(Math.random() * 100000);
 
+    const script = document.createElement("script");
+
+    const timeout = setTimeout(() => {
+      cleanup();
+      reject(new Error("Timeout"));
+    }, 15000);
+
+    function cleanup() {
+      clearTimeout(timeout);
+      delete window[callbackName];
+
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    }
+
+    window[callbackName] = function(data) {
+      cleanup();
+      resolve(data);
+    };
+
+    script.onerror = function() {
+      cleanup();
+      reject(new Error("JSONP load error"));
+    };
+
+    script.src =
+      PERSON_LOOKUP_URL +
+      "?id=" + encodeURIComponent(id) +
+      "&callback=" + encodeURIComponent(callbackName);
+
+    document.body.appendChild(script);
+  });
+}
 function normalizeCardNumber(value) {
   return String(value || "").replace(/[^\d]/g, "").trim();
 }
