@@ -1585,7 +1585,7 @@ async function lookupPerson(input) {
   const id = input.value.trim();
   if (!id) return;
 
-  const row = input.closest("tr");
+  const row = input.closest("#crewTable tr") || input.parentElement.parentElement;
   const nameEl = row.querySelector(".name");
   const clubEl = row.querySelector(".club");
   const statusEl = row.querySelector(".personStatus");
@@ -1637,7 +1637,10 @@ async function lookupPerson(input) {
       row.dataset.cardStatus = "valid";
 
       if (statusEl) {
-        statusEl.innerText = "✔ ΕΓΚΥΡΟ";
+        statusEl.innerText = input.closest("#crewTable")
+          ? "✔ ΕΓΚΥΡΟ"
+          : "✔ Βρέθηκε";
+
         statusEl.style.color = "#2e7d32";
         statusEl.style.fontWeight = "bold";
       }
@@ -1647,8 +1650,9 @@ async function lookupPerson(input) {
       if (crewSectionEl && input.closest("#crewScreen")) {
         crewSectionEl.style.display = "block";
 
-        if (input.closest("#crewTable")) {
-          document.getElementById("continueToJotformBtn").style.display = "inline-block";
+        const continueBtn = document.getElementById("continueToJotformBtn");
+        if (continueBtn && input.closest("#crewTable")) {
+          continueBtn.style.display = "inline-block";
         }
       }
 
@@ -1656,8 +1660,11 @@ async function lookupPerson(input) {
       row.dataset.cardStatus = "invalid";
 
       if (statusEl) {
-        statusEl.innerText = "✖ ΑΚΥΡΟ";
-        statusEl.style.color = "#b00020";
+        statusEl.innerText = input.closest("#crewTable")
+          ? "✖ ΑΚΥΡΟ"
+          : "✔ Βρέθηκε";
+
+        statusEl.style.color = input.closest("#crewTable") ? "#b00020" : "#2e7d32";
         statusEl.style.fontWeight = "bold";
       }
     }
@@ -1671,7 +1678,7 @@ async function lookupPerson(input) {
     row.dataset.checkedCard = cleanId;
 
     if (statusEl) {
-      statusEl.innerText = "✖ Σφάλμα επικοινωνίας. Παρακαλούμε δοκιμάστε ξανά.";
+      statusEl.innerText = "✖ Σφάλμα: " + (err.message || "επικοινωνίας");
       statusEl.style.color = "#b00020";
       statusEl.style.fontWeight = "bold";
     }
