@@ -829,13 +829,11 @@ body.jotform-open #formFrame {
   Συμπληρώστε τα δελτία των νέων αθλητών που προστίθενται στο πλήρωμα. Για αυτά τα δελτία θα γίνει έλεγχος εγκυρότητας.
   </div>
 
-  <textarea
-    id="bulkCrewCards"
-   <textarea
+<textarea
   id="bulkCrewCards"
   placeholder="Επικολλήστε εδώ τους αριθμούς δελτίων, έναν ανά γραμμή ή χωρισμένους με κενό, κόμμα ή tab"
-    style="width:100%; height:105px; font-size:16px; padding:8px; margin:8px 0 8px 0; font-family:Arial, sans-serif;"
-  ></textarea>
+  style="width:100%; height:105px; font-size:16px; padding:8px; margin:8px 0 8px 0; font-family:Arial, sans-serif;"
+></textarea>
 
   <button class="btn" type="button" onclick="lookupBulkCrewCards()" style="margin-bottom:10px;">
     ΕΛΕΓΧΟΣ ΝΕΩΝ ΔΕΛΤΙΩΝ
@@ -1585,12 +1583,13 @@ async function lookupPerson(input) {
   const id = input.value.trim();
   if (!id) return;
 
-  const row = input.closest("#crewTable tr") || input.parentElement.parentElement;
+  const row = input.closest("#crewTable tr") || input.closest("#crewScreen");
   const nameEl = row.querySelector(".name");
   const clubEl = row.querySelector(".club");
   const statusEl = row.querySelector(".personStatus");
 
   const cleanId = normalizeCardNumber(id);
+  const isCrewRow = !!input.closest("#crewTable");
 
   row.dataset.cardStatus = "";
   row.dataset.checkedCard = "";
@@ -1607,7 +1606,7 @@ async function lookupPerson(input) {
   refreshWosrSelectors();
 
   try {
-    const res = await fetch(PERSON_LOOKUP_URL + "?type=person&id=" + encodeURIComponent(cleanId));
+    const res = await fetch(PERSON_LOOKUP_URL + "?id=" + encodeURIComponent(cleanId));
     const json = await res.json();
 
     row.dataset.checkedCard = cleanId;
@@ -1619,7 +1618,7 @@ async function lookupPerson(input) {
       clubEl.innerText = "";
 
       if (statusEl) {
-        statusEl.innerText = "✖ ΔΕΝ ΒΡΕΘΗΚΕ";
+        statusEl.innerText = isCrewRow ? "✖ ΔΕΝ ΒΡΕΘΗΚΕ" : "✖ Δεν βρέθηκε";
         statusEl.style.color = "#b00020";
         statusEl.style.fontWeight = "bold";
       }
@@ -1637,10 +1636,7 @@ async function lookupPerson(input) {
       row.dataset.cardStatus = "valid";
 
       if (statusEl) {
-        statusEl.innerText = input.closest("#crewTable")
-          ? "✔ ΕΓΚΥΡΟ"
-          : "✔ Βρέθηκε";
-
+        statusEl.innerText = isCrewRow ? "✔ ΕΓΚΥΡΟ" : "✔ Βρέθηκε";
         statusEl.style.color = "#2e7d32";
         statusEl.style.fontWeight = "bold";
       }
@@ -1651,7 +1647,7 @@ async function lookupPerson(input) {
         crewSectionEl.style.display = "block";
 
         const continueBtn = document.getElementById("continueToJotformBtn");
-        if (continueBtn && input.closest("#crewTable")) {
+        if (continueBtn && isCrewRow) {
           continueBtn.style.display = "inline-block";
         }
       }
@@ -1660,11 +1656,8 @@ async function lookupPerson(input) {
       row.dataset.cardStatus = "invalid";
 
       if (statusEl) {
-        statusEl.innerText = input.closest("#crewTable")
-          ? "✖ ΑΚΥΡΟ"
-          : "✔ Βρέθηκε";
-
-        statusEl.style.color = input.closest("#crewTable") ? "#b00020" : "#2e7d32";
+        statusEl.innerText = isCrewRow ? "✖ ΑΚΥΡΟ" : "✔ Βρέθηκε";
+        statusEl.style.color = isCrewRow ? "#b00020" : "#2e7d32";
         statusEl.style.fontWeight = "bold";
       }
     }
