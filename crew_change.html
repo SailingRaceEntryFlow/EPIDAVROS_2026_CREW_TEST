@@ -1710,10 +1710,11 @@ function fetchPersonLookupJsonp(id) {
       reject(new Error("JSONP load error"));
     };
 
-    script.src =
-      PERSON_LOOKUP_URL +
-      "?id=" + encodeURIComponent(id) +
-      "&callback=" + encodeURIComponent(callbackName);
+   script.src =
+  PERSON_LOOKUP_URL +
+  "?id=" + encodeURIComponent(id) +
+  "&callback=" + encodeURIComponent(callbackName) +
+  "&_=" + Date.now();
 
     document.body.appendChild(script);
   });
