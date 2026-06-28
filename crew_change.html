@@ -1606,7 +1606,8 @@ async function lookupPerson(input) {
   refreshWosrSelectors();
 
   try {
-  const json = await fetchPersonLookupJsonp(cleanId);
+const res = await fetch(PERSON_LOOKUP_URL + "?type=person&id=" + encodeURIComponent(cleanId));
+const json = await res.json();
 
     row.dataset.checkedCard = cleanId;
 
