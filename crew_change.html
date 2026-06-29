@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Αλλαγή Πληρώματος - ΕΠΙΔΑΥΡΟΣ 2026</title>
+  <title>Regatta Entry Management System - ΕΠΙΔΑΥΡΟΣ 2026 CREW</title>
 
   <style>
     * {
@@ -711,7 +711,7 @@ body.jotform-open #formFrame {
             <img id="eventLogo" class="event-logo" src="" alt="Regatta Entry Management System" />
           </div>
 
-       <div class="app-title">ΑΛΛΑΓΗ ΠΛΗΡΩΜΑΤΟΣ</div>
+         <div class="app-title">ΔΗΛΩΣΗ ΣΥΜΜΕΤΟΧΗΣ</div>
 
 <div style="font-size:17px; font-weight:bold; text-align:center; margin:10px 0 18px 0;">
   στον αγώνα ιστιοπλοΐας ανοικτής θάλασσας
@@ -758,7 +758,7 @@ body.jotform-open #formFrame {
 
       <div class="separator"></div>
 
- <div class="section-title" id="eventTitle" style="display:none;"></div>
+<div class="section-title" id="eventTitle" style="display:none;"></div>
 
       <div class="notice-box">
         <div class="line1">Η ΑΝΑΖΗΤΗΣΗ ΓΙΝΕΤΑΙ ΜΟΝΟ ΜΕ ΤΟΝ ΑΡΙΘΜΟ ΙΣΤΙΟΥ.</div>
@@ -783,16 +783,16 @@ body.jotform-open #formFrame {
         <div class="result-title" id="resultText"></div>
       </div>
 
-      <div class="actions" id="actions"><button class="btn" id="continueBtn" type="button">ΚΑΤΑΧΩΡΗΣΗ ΝΕΟΥ ΠΛΗΡΩΜΑΤΟΣ</button>
+      <div class="actions" id="actions"><button class="btn" id="continueBtn" type="button">ΚΑΤΑΧΩΡΗΣΗ ΠΛΗΡΩΜΑΤΟΣ</button>
         <button class="btn secondary" id="newSearchBtn" type="button">ΝΕΑ ΑΝΑΖΗΤΗΣΗ</button>
       </div>
 
 <div id="crewScreen" style="display:none; max-width:720px; margin:20px auto; border:1px solid #bfb6aa; padding:28px; background:white; text-align:center; border-radius:6px;">
 
- <h3 style="text-align:center;">ΣΤΟΙΧΕΙΑ ΑΛΛΑΓΗΣ ΠΛΗΡΩΜΑΤΟΣ</h3>
+  <h3 style="text-align:center;">ΣΤΟΙΧΕΙΑ ΚΥΒΕΡΝΗΤΗ ΚΑΙ ΠΛΗΡΩΜΑΤΟΣ</h3>
 
   <div style="margin-bottom:20px;">
-<strong>ΚΥΒΕΡΝΗΤΗΣ / ΥΠΕΥΘΥΝΟΣ ΥΠΟΒΟΛΗΣ</strong><br>
+<strong>ΚΥΒΕΡΝΗΤΗΣ</strong><br>
 <label style="font-weight:bold;">
   Συμπληρώστε τον αριθμό αθλητικού δελτίου κυβερνήτη
 </label><br>
@@ -823,20 +823,20 @@ body.jotform-open #formFrame {
   </div>
 
 <div id="crewSection" style="display:none;">
-<strong>ΑΘΛΗΤΕΣ ΠΟΥ ΠΡΟΣΤΙΘΕΝΤΑΙ</strong>
+  <strong>ΠΛΗΡΩΜΑ</strong>
 
   <div style="font-size:14px; margin:6px 0 10px 0;">
-  Συμπληρώστε τα δελτία των νέων αθλητών που προστίθενται στο πλήρωμα. Για αυτά τα δελτία θα γίνει έλεγχος εγκυρότητας.
+    Μπορείτε είτε να βάλετε τα δελτία ένα-ένα, είτε να επικολλήσετε πολλούς αριθμούς μαζί και να πατήσετε <strong>ΑΝΑΖΗΤΗΣΗ ΟΛΩΝ</strong>.
   </div>
 
-<textarea
-  id="bulkCrewCards"
-  placeholder="Επικολλήστε εδώ τους αριθμούς δελτίων, έναν ανά γραμμή ή χωρισμένους με κενό, κόμμα ή tab"
-  style="width:100%; height:105px; font-size:16px; padding:8px; margin:8px 0 8px 0; font-family:Arial, sans-serif;"
-></textarea>
+  <textarea
+    id="bulkCrewCards"
+    placeholder="Επικολλήστε εδώ τους αριθμούς δελτίων, έναν ανά γραμμή ή χωρισμένους με κενό, κόμμα ή tab"
+    style="width:100%; height:105px; font-size:16px; padding:8px; margin:8px 0 8px 0; font-family:Arial, sans-serif;"
+  ></textarea>
 
   <button class="btn" type="button" onclick="lookupBulkCrewCards()" style="margin-bottom:10px;">
-    ΕΛΕΓΧΟΣ ΝΕΩΝ ΔΕΛΤΙΩΝ
+    ΑΝΑΖΗΤΗΣΗ ΟΛΩΝ
   </button>
 
   <div style="font-size:13px; color:#5f5147; margin-bottom:10px;">
@@ -847,22 +847,10 @@ body.jotform-open #formFrame {
 
 <div id="addCrewButtonBox" style="text-align:center; margin:12px 0 14px 0;">
   <button class="btn secondary" type="button" onclick="addCrewMemberSafe()">
-  + Προσθήκη νέου αθλητή
+    + Προσθήκη μέλους
   </button>
 </div>
-<div id="removedCrewSection" style="margin:24px auto 18px auto; padding:16px; border:1px solid #bfb6aa; background:#fffdf5; max-width:620px; text-align:center;">
-  <strong>ΑΘΛΗΤΕΣ ΠΟΥ ΑΦΑΙΡΟΥΝΤΑΙ</strong>
 
-  <div style="font-size:14px; margin:8px 0 10px 0;">
-    Συμπληρώστε τους αθλητές που αφαιρούνται από το πλήρωμα. Για αυτά τα δελτία δεν γίνεται έλεγχος εγκυρότητας.
-  </div>
-
-  <textarea
-    id="removedCrewText"
-    placeholder="Γράψτε εδώ τους αθλητές που αφαιρούνται, έναν ανά γραμμή. Μπορείτε να βάλετε όνομα ή/και αριθμό δελτίου."
-    style="width:100%; height:105px; font-size:16px; padding:8px; margin:8px 0 8px 0; font-family:Arial, sans-serif;"
-  ></textarea>
-</div>
 <div id="wosrSelectBox" style="display:none; margin:16px auto 10px auto; padding:12px; border:1px solid #bfb6aa; background:#f8f8f8; max-width:620px; text-align:left;">
   <div style="font-weight:bold; text-align:center; margin-bottom:10px;">
     ΕΞΟΙΚΕΙΩΜΕΝΑ ΜΕΛΗ ΠΛΗΡΩΜΑΤΟΣ ΜΕ ΤΙΣ ΔΙΑΔΙΚΑΣΙΕΣ WS OSR 6.05.3
@@ -907,7 +895,7 @@ body.jotform-open #formFrame {
  const CONFIG = {
   EVENT_TITLE: "ΕΠΙΔΑΥΡΟΣ 2026",
   BOAT_LOOKUP_URL: "https://script.google.com/macros/s/AKfycbzOp-9gQ9xMZtb7GxrLcWW_Nc5yrBu7KbmqDVYlI3s1GQ3wJhmOCfKyaoKgvTfttI2v/exec",
-PERSON_LOOKUP_URL: "https://script.google.com/macros/s/AKfycbz9ss2-7NSaypAtzhclO3c2YbKCbGeY15dwWeY5se51_pVxE1rO8_WfALptKzz-2IHtCg/exec",
+  PERSON_LOOKUP_URL: "https://script.google.com/macros/s/AKfycbw-zgZZeHRC6S5_f1xGkTwx-wXcFNq9z2O4cfhzAHSULQNDrwCp88vcvgU-617pgcg1/exec",
 
   // ΠΡΟΣΟΧΗ:
   // Κρατάμε εδώ τη φόρμα που έχει τα πεδία κυβερνήτη/πληρώματος.
@@ -1389,10 +1377,6 @@ if (acceptTerms && !acceptTerms.checked) {
         alert("Δεν έχει προστεθεί κανένα μέλος πληρώματος.\n\nΠάτησε πρώτα '+ Προσθήκη μέλους', βάλε αριθμό δελτίου και πάτησε 🔍.");
         return;
       }
-      if (hasInvalidAddedCrewRows()) {
-  alert("Υπάρχει νέο δελτίο που είναι ΑΚΥΡΟ, ΔΕΝ ΒΡΕΘΗΚΕ ή δεν έχει ελεγχθεί. Παρακαλούμε διαγράψτε το ή διορθώστε το πριν συνεχίσετε.");
-  return;
-}
 const wosr1 = document.getElementById("wosrMember1")?.value || "";
 const wosr2 = document.getElementById("wosrMember2")?.value || "";
 
@@ -1570,7 +1554,7 @@ if (acceptTerms && !acceptTerms.checked) {
   resultCard.style.display = "none";
   actions.style.display = "none";
 
- document.getElementById("crewScreen").style.display = "block";
+document.getElementById("crewScreen").style.display = "block";
 document.getElementById("crewSection").style.display = "block";
 formWrap.style.display = "none";
 
@@ -1583,165 +1567,64 @@ async function lookupPerson(input) {
   const id = input.value.trim();
   if (!id) return;
 
-  const row = input.closest("#crewTable tr") || input.closest("#crewScreen");
+ const row = input.parentElement.parentElement;
   const nameEl = row.querySelector(".name");
   const clubEl = row.querySelector(".club");
   const statusEl = row.querySelector(".personStatus");
 
-  const cleanId = normalizeCardNumber(id);
-  const isCrewRow = !!input.closest("#crewTable");
-
-  row.dataset.cardStatus = "";
-  row.dataset.checkedCard = "";
-
   nameEl.innerText = "";
   clubEl.innerText = "";
 
-  if (statusEl) {
-    statusEl.innerText = "Γίνεται έλεγχος δελτίου...";
-    statusEl.style.color = "#7a5a00";
-    statusEl.style.fontWeight = "bold";
-  }
+if (statusEl) {
+  statusEl.innerText = "✔ Βρέθηκε";
+  statusEl.style.color = "#2e7d32";
+}
 
-  refreshWosrSelectors();
+refreshWosrSelectors();
 
   try {
-const res = await fetch(PERSON_LOOKUP_URL + "?type=person&id=" + encodeURIComponent(cleanId));
-const json = await res.json();
+    const res = await fetch(PERSON_LOOKUP_URL + "?type=person&id=" + encodeURIComponent(id));
+    const json = await res.json();
 
-    row.dataset.checkedCard = cleanId;
-
-    if (!json.ok || !json.found || !json.data) {
-      row.dataset.cardStatus = "not_found";
-
+    if (!json.found) {
       nameEl.innerText = "Δεν βρέθηκε";
       clubEl.innerText = "";
 
       if (statusEl) {
-        statusEl.innerText = isCrewRow ? "✖ ΔΕΝ ΒΡΕΘΗΚΕ" : "✖ Δεν βρέθηκε";
+        statusEl.innerText = "✖ Το δελτίο δεν βρέθηκε. Παρακαλούμε ελέγξτε τον αριθμό.";
         statusEl.style.color = "#b00020";
-        statusEl.style.fontWeight = "bold";
       }
 
       return;
     }
 
-    const data = json.data || {};
-    const status = String(data.status || "").trim();
+    nameEl.innerText = json.data.name || "";
+ clubEl.innerText = shortClubName(json.data.club || "");
+    
+const crewSectionEl = document.getElementById("crewSection");
 
-    nameEl.innerText = data.name || "";
-    clubEl.innerText = shortClubName(data.club || "");
+if (crewSectionEl && input.closest("#crewScreen")) {
+  crewSectionEl.style.display = "block";
 
-    if (status === "Active") {
-      row.dataset.cardStatus = "valid";
-
-      if (statusEl) {
-        statusEl.innerText = isCrewRow ? "✔ ΕΓΚΥΡΟ" : "✔ Βρέθηκε";
-        statusEl.style.color = "#2e7d32";
-        statusEl.style.fontWeight = "bold";
-      }
-
-      const crewSectionEl = document.getElementById("crewSection");
-
-      if (crewSectionEl && input.closest("#crewScreen")) {
-        crewSectionEl.style.display = "block";
-
-        const continueBtn = document.getElementById("continueToJotformBtn");
-        if (continueBtn && isCrewRow) {
-          continueBtn.style.display = "inline-block";
-        }
-      }
-
-    } else {
-      row.dataset.cardStatus = "invalid";
-
-      if (statusEl) {
-        statusEl.innerText = isCrewRow ? "✖ ΑΚΥΡΟ" : "✔ Βρέθηκε";
-        statusEl.style.color = isCrewRow ? "#b00020" : "#2e7d32";
-        statusEl.style.fontWeight = "bold";
-      }
+  // Το κουμπί για Jotform να εμφανίζεται ΜΟΝΟ όταν έχει βρεθεί μέλος πληρώματος,
+  // όχι απλώς όταν βρέθηκε ο κυβερνήτης.
+  if (input.closest("#crewTable")) {
+    document.getElementById("continueToJotformBtn").style.display = "inline-block";
+  }
+}
+    if (statusEl) {
+   statusEl.innerText = "✔ Βρέθηκε";
+statusEl.style.color = "#2e7d32";
     }
-
-    refreshWosrSelectors();
 
   } catch (err) {
     console.error(err);
 
-    row.dataset.cardStatus = "error";
-    row.dataset.checkedCard = cleanId;
-
     if (statusEl) {
-      statusEl.innerText = "✖ Σφάλμα: " + (err.message || "επικοινωνίας");
+      statusEl.innerText = "✖ Σφάλμα επικοινωνίας. Παρακαλούμε δοκιμάστε ξανά.";
       statusEl.style.color = "#b00020";
-      statusEl.style.fontWeight = "bold";
     }
   }
-}
-function fetchPersonLookupJsonp(id) {
-  return new Promise((resolve, reject) => {
-    const callbackName =
-      "personLookupCallback_" +
-      Date.now() +
-      "_" +
-      Math.floor(Math.random() * 100000);
-
-    const script = document.createElement("script");
-
-    const timeout = setTimeout(() => {
-      cleanup();
-      reject(new Error("Timeout"));
-    }, 15000);
-
-    function cleanup() {
-      clearTimeout(timeout);
-      delete window[callbackName];
-
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-    }
-
-    window[callbackName] = function(data) {
-      cleanup();
-      resolve(data);
-    };
-
-    script.onerror = function() {
-      cleanup();
-      reject(new Error("JSONP load error"));
-    };
-
-   script.src =
-  PERSON_LOOKUP_URL +
-  "?id=" + encodeURIComponent(id) +
-  "&callback=" + encodeURIComponent(callbackName) +
-  "&_=" + Date.now();
-
-    document.body.appendChild(script);
-  });
-}
-function normalizeCardNumber(value) {
-  return String(value || "").replace(/[^\d]/g, "").trim();
-}
-
-function hasInvalidAddedCrewRows() {
-  const rows = document.querySelectorAll("#crewTable tbody tr");
-
-  for (const row of rows) {
-    const input = row.querySelector("input");
-    const card = normalizeCardNumber(input ? input.value : "");
-
-    if (!card) continue;
-
-    const checkedCard = row.dataset.checkedCard || "";
-    const cardStatus = row.dataset.cardStatus || "";
-
-    if (checkedCard !== card || cardStatus !== "valid") {
-      return true;
-    }
-  }
-
-  return false;
 }
 
 async function lookupBulkCrewCards() {
