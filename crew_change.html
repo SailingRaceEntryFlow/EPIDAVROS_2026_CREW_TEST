@@ -1734,6 +1734,42 @@ function showCrewScreen() {
     document.getElementById("removeCrewChangeBox").style.display = this.checked ? "block" : "none";
   });
 
+  document.querySelectorAll(".removeCrewCheck").forEach((check) => {
+  check.addEventListener("change", function () {
+    const label = this.closest("label");
+
+    if (!label) return;
+
+    let badge = label.querySelector(".removeBadge");
+
+    if (this.checked) {
+      label.style.background = "#ffecec";
+      label.style.borderColor = "#b00020";
+      label.style.color = "#7a0000";
+      label.style.fontWeight = "bold";
+
+      if (!badge) {
+        badge = document.createElement("span");
+        badge.className = "removeBadge";
+        badge.innerText = "  — Επιλέχθηκε για αφαίρεση";
+        badge.style.color = "#b00020";
+        badge.style.fontWeight = "bold";
+        label.appendChild(badge);
+      }
+
+    } else {
+      label.style.background = "#fff";
+      label.style.borderColor = "#d0c8bd";
+      label.style.color = "";
+      label.style.fontWeight = "";
+
+      if (badge) {
+        badge.remove();
+      }
+    }
+  });
+});
+  
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
