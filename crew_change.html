@@ -1724,6 +1724,11 @@ function showCrewScreen() {
 
       ${removeRowsHtml}
     </div>
+    <div style="text-align:center; margin-top:22px;">
+  <button class="btn" type="button" onclick="validateCrewChangeBeforeSubmit()">
+    ΣΥΝΕΧΕΙΑ ΣΤΗΝ ΚΑΤΑΧΩΡΗΣΗ ΑΛΛΑΓΗΣ
+  </button>
+</div>
   `;
 
   document.getElementById("willAddCrew").addEventListener("change", function () {
@@ -2225,6 +2230,57 @@ function loadCrewFromJson(crewJson) {
   members.forEach((member) => {
     addCrewMemberFromData(member);
   });
+}
+    function validateCrewChangeBeforeSubmit() {
+  const willAdd = document.getElementById("willAddCrew")?.checked || false;
+  const willRemove = document.getElementById("willRemoveCrew")?.checked || false;
+
+  if (!willAdd && !willRemove) {
+    alert("Παρακαλώ επιλέξτε αν θα προσθέσετε ή/και θα αφαιρέσετε μέλος πληρώματος.");
+    return;
+  }
+
+  if (willAdd) {
+    const addedRows = Array.from(document.querySelectorAll("#addedCrewTable tbody tr"));
+
+    if (addedRows.length === 0) {
+      alert("Έχετε επιλέξει προσθήκη μέλους, αλλά δεν έχετε προσθέσει κανένα νέο μέλος.");
+      return;
+    }
+
+    for (const row of addedRows) {
+      const card = String(row.querySelector("input")?.value || "").trim();
+      const checkedCard = String(row.dataset.checkedCard || "").trim();
+      const status = String(row.dataset.cardStatus || "").trim();
+
+      if (!card) {
+        alert("Υπάρχει γραμμή νέου μέλους χωρίς αριθμό δελτίου.");
+        return;
+      }
+
+      if (!checkedCard || checkedCard !== card) {
+        alert("Υπάρχει νέο μέλος που δεν έχει ελεγχθεί. Πατήστε πρώτα ΑΝΑΖΗΤΗΣΗ.");
+        return;
+      }
+
+      if (status !== "valid") {
+        alert("Υπάρχει νέο μέλος που δεν είναι έγκυρο ή δεν βρέθηκε. Δεν μπορείτε να συνεχίσετε.");
+        return;
+      }
+    }
+  }
+
+  if (willRemove) {
+    const selectedForRemoval = Array.from(document.querySelectorAll(".removeCrewCheck"))
+      .filter(check => check.checked);
+
+    if (selectedForRemoval.length === 0) {
+      alert("Έχετε επιλέξει αφαίρεση μέλους, αλλά δεν έχετε τσεκάρει κανένα μέλος για αφαίρεση.");
+      return;
+    }
+  }
+
+  alert("Ο έλεγχος ολοκληρώθηκε σωστά. Στο επόμενο βήμα θα ανοίγει η φόρμα καταχώρησης αλλαγής πληρώματος.");
 }
 </script>
 </body>
