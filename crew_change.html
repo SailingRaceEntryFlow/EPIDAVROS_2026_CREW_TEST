@@ -1540,27 +1540,193 @@ window.scrollTo({ top: 0, behavior: "auto" });
 function showCrewScreen() {
   const acceptTerms = document.getElementById("acceptTermsCheck");
 
-if (acceptTerms && !acceptTerms.checked) {
-  alert("Παρακαλούμε αποδεχθείτε την Πολιτική Απορρήτου και τους Όρους Χρήσης για να συνεχίσετε.");
-  acceptTerms.scrollIntoView({ behavior: "smooth", block: "center" });
-  return;
-}
-  document.querySelector(".hero").style.display = "none";
-  document.querySelector(".separator").style.display = "none";
-  document.getElementById("eventTitle").style.display = "none";
-  document.querySelector(".notice-box").style.display = "none";
-  document.querySelector(".search-area").style.display = "none";
+  if (acceptTerms && !acceptTerms.checked) {
+    alert("Παρακαλούμε αποδεχθείτε την Πολιτική Απορρήτου και τους Όρους Χρήσης για να συνεχίσετε.");
+    acceptTerms.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+
+  if (!lastFoundData) {
+    setStatus("Δεν υπάρχουν στοιχεία αρχικής υποβολής για συνέχεια.", true, false, true);
+    return;
+  }
+
+  const data = lastFoundData || {};
+  const crewMembers = Array.isArray(data.crew_members) ? data.crew_members : [];
+
+  function esc(v) {
+    return String(v || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function hide(selector) {
+    const el = document.querySelector(selector);
+    if (el) el.style.display = "none";
+  }
+
+  hide(".hero");
+  hide(".separator");
+  hide(".notice-box");
+  hide(".search-area");
+
+  const eventTitleEl = document.getElementById("eventTitle");
+  if (eventTitleEl) eventTitleEl.style.display = "none";
+
   statusBox.style.display = "none";
   resultCard.style.display = "none";
   actions.style.display = "none";
 
-document.getElementById("crewScreen").style.display = "block";
-document.getElementById("crewSection").style.display = "block";
-formWrap.style.display = "none";
+  const crewScreen = document.getElementById("crewScreen");
+  crewScreen.style.display = "block";
+
+  const crewRowsHtml = crewMembers.length
+    ? crewMembers.map((m, index) => `
+        <tr>
+          <td style="border:1px solid #bfb6aa; padding:7px; text-align:center;">${index + 1}</td>
+          <td style="border:1px solid #bfb6aa; padding:7px;">${esc(m.name)}</td>
+          <td style="border:1px solid #bfb6aa; padding:7px; text-align:center;">${esc(m.card)}</td>
+          <td style="border:1px solid #bfb6aa; padding:7px;">${esc(m.club)}</td>
+        </tr>
+      `).join("")
+    : `
+        <tr>
+          <td colspan="4" style="border:1px solid #bfb6aa; padding:10px; text-align:center; color:#b00020;">
+            Δεν βρέθηκαν καταχωρημένα μέλη πληρώματος στην αρχική υποβολή.
+          </td>
+        </tr>
+      `;
+
+  const removeRowsHtml = crewMembers.length
+    ? crewMembers.map((m, index) => `
+        <label style="display:block; margin:7px 0; padding:8px; border:1px solid #d0c8bd; background:#fff;">
+          <input type="checkbox" class="removeCrewCheck" data-card="${esc(m.card)}" data-name="${esc(m.name)}" style="width:18px; height:18px; margin-right:8px; vertical-align:middle;">
+          ${index + 1}. ${esc(m.name)} — ${esc(m.card)} — ${esc(m.club)}
+        </label>
+      `).join("")
+    : `
+        <div style="color:#b00020; font-weight:bold;">
+          Δεν υπάρχει διαθέσιμο πλήρωμα για επιλογή αφαίρεσης.
+        </div>
+      `;
+
+  crewScreen.innerHTML = `
+    <h3 style="text-align:center; color:#0d5e92; font-size:26px; margin-bottom:18px;">
+      ΣΤΟΙΧΕΙΑ ΑΡΧΙΚΗΣ ΥΠΟΒΟΛΗΣ
+    </h3>
+
+    <div style="border:1px solid #bfb6aa; background:#f8f8f8; padding:14px; margin-bottom:16px; text-align:left;">
+      <div style="font-size:20px; font-weight:bold; text-align:center; margin-bottom:12px;">
+        ${esc(data.yacht_name)} ${esc(data.sail_letters)}${esc(data.sail_number)}
+      </div>
+
+      <table style="width:100%; border-collapse:collapse; font-size:15px;">
+        <tr>
+          <td style="border:1px solid #bfb6aa; padding:7px; font-weight:bold; width:180px; background:#f1f4ef;">Σκάφος</td>
+          <td style="border:1px solid #bfb6aa; padding:7px;">${esc(data.yacht_name)}</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #bfb6aa; padding:7px; font-weight:bold; background:#f1f4ef;">Αριθμός ιστίου</td>
+          <td style="border:1px solid #bfb6aa; padding:7px;">${esc(data.sail_letters)}${esc(data.sail_number)}</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #bfb6aa; padding:7px; font-weight:bold; background:#f1f4ef;">Τύπος σκάφους</td>
+          <td style="border:1px solid #bfb6aa; padding:7px;">${esc(data.yacht_type)}</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #bfb6aa; padding:7px; font-weight:bold; background:#f1f4ef;">Όμιλος</td>
+          <td style="border:1px solid #bfb6aa; padding:7px;">${esc(data.club)}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="border:1px solid #bfb6aa; background:#fff; padding:14px; margin-bottom:16px; text-align:left;">
+      <div style="font-weight:bold; font-size:18px; text-align:center; margin-bottom:10px;">
+        ΚΥΒΕΡΝΗΤΗΣ / ΥΠΕΥΘΥΝΟΣ ΥΠΟΒΟΛΗΣ
+      </div>
+
+      <table style="width:100%; border-collapse:collapse; font-size:15px;">
+        <tr>
+          <td style="border:1px solid #bfb6aa; padding:7px; font-weight:bold; width:180px; background:#f1f4ef;">Ονοματεπώνυμο</td>
+          <td style="border:1px solid #bfb6aa; padding:7px;">${esc(data.captain_name)}</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #bfb6aa; padding:7px; font-weight:bold; background:#f1f4ef;">Αρ. δελτίου</td>
+          <td style="border:1px solid #bfb6aa; padding:7px;">${esc(data.captain_card)}</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #bfb6aa; padding:7px; font-weight:bold; background:#f1f4ef;">E-mail</td>
+          <td style="border:1px solid #bfb6aa; padding:7px;">${esc(data.contact_email)}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="border:1px solid #bfb6aa; background:#fff; padding:14px; margin-bottom:18px; text-align:left;">
+      <div style="font-weight:bold; font-size:18px; text-align:center; margin-bottom:10px;">
+        ΥΠΑΡΧΟΝ ΠΛΗΡΩΜΑ
+      </div>
+
+      <table style="width:100%; border-collapse:collapse; font-size:14px;">
+        <thead>
+          <tr style="background:#f1f4ef;">
+            <th style="border:1px solid #bfb6aa; padding:7px; width:45px;">Α/Α</th>
+            <th style="border:1px solid #bfb6aa; padding:7px;">ΟΝΟΜΑΤΕΠΩΝΥΜΟ</th>
+            <th style="border:1px solid #bfb6aa; padding:7px; width:110px;">ΔΕΛΤΙΟ</th>
+            <th style="border:1px solid #bfb6aa; padding:7px;">ΟΜΙΛΟΣ</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${crewRowsHtml}
+        </tbody>
+      </table>
+    </div>
+
+    <div style="border:2px solid #8da170; background:#f8fff1; padding:14px; margin-bottom:16px; text-align:left;">
+      <div style="font-weight:bold; font-size:18px; text-align:center; margin-bottom:12px;">
+        ΤΙ ΑΛΛΑΓΗ ΘΕΛΕΤΕ ΝΑ ΚΑΝΕΤΕ;
+      </div>
+
+      <label style="display:block; font-size:16px; font-weight:bold; margin:10px 0;">
+        <input type="checkbox" id="willAddCrew" style="width:20px; height:20px; margin-right:8px; vertical-align:middle;">
+        Θα προσθέσετε νέο μέλος στο πλήρωμα;
+      </label>
+
+      <label style="display:block; font-size:16px; font-weight:bold; margin:10px 0;">
+        <input type="checkbox" id="willRemoveCrew" style="width:20px; height:20px; margin-right:8px; vertical-align:middle;">
+        Θα αφαιρέσετε μέλος/μέλη από το πλήρωμα;
+      </label>
+    </div>
+
+    <div id="addCrewChangeBox" style="display:none; border:1px solid #bfb6aa; background:#fff; padding:14px; margin-bottom:16px; text-align:left;">
+      <div style="font-weight:bold; font-size:18px; text-align:center; margin-bottom:10px;">
+        ΝΕΑ ΜΕΛΗ ΠΟΥ ΘΑ ΠΡΟΣΤΕΘΟΥΝ
+      </div>
+      <div style="font-size:14px; color:#5f5147; text-align:center;">
+        Στο επόμενο βήμα θα βάλουμε εδώ πίνακα εισαγωγής δελτίων και έλεγχο status.
+      </div>
+    </div>
+
+    <div id="removeCrewChangeBox" style="display:none; border:1px solid #bfb6aa; background:#fff; padding:14px; margin-bottom:16px; text-align:left;">
+      <div style="font-weight:bold; font-size:18px; text-align:center; margin-bottom:10px;">
+        ΜΕΛΗ ΠΟΥ ΘΑ ΑΦΑΙΡΕΘΟΥΝ
+      </div>
+
+      ${removeRowsHtml}
+    </div>
+  `;
+
+  document.getElementById("willAddCrew").addEventListener("change", function () {
+    document.getElementById("addCrewChangeBox").style.display = this.checked ? "block" : "none";
+  });
+
+  document.getElementById("willRemoveCrew").addEventListener("change", function () {
+    document.getElementById("removeCrewChangeBox").style.display = this.checked ? "block" : "none";
+  });
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
 
 // 👉 ΒΑΖΕΙΣ ΕΔΩ ΤΗ ΝΕΑ FUNCTION
 async function lookupPerson(input) {
