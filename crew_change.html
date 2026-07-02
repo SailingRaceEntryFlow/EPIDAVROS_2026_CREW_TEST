@@ -1711,6 +1711,28 @@ function showCrewScreen() {
     Αν κάποιο από τα παραπάνω μέλη αφαιρεθεί από το πλήρωμα, θα πρέπει να δηλωθεί αντικαταστάτης.
   </div>
 </div>
+   <div style="border:1px solid #bfb6aa; background:#f7fbff; padding:14px; margin-bottom:18px; text-align:left;">
+  <label style="display:block; font-size:16px; font-weight:bold; margin-bottom:12px;">
+    <input type="checkbox" id="changeWosrCrew" style="width:20px; height:20px; margin-right:8px; vertical-align:middle;">
+    Θέλετε να αλλάξετε τα δηλωμένα μέλη WS OSR 6.05.3;
+  </label>
+
+  <div id="wosrChangeBox" style="display:none;">
+    <div style="font-size:14px; color:#5f5147; text-align:center; margin-bottom:10px;">
+      Επιλέξτε δύο διαφορετικά μέλη από το τελικό πλήρωμα.
+    </div>
+
+    <label style="font-weight:bold;">Μέλος WS OSR 1:</label>
+    <select id="wosrMember1Select" style="width:100%; height:38px; font-size:15px; margin:6px 0 12px 0;">
+      <option value="">Επιλέξτε μέλος</option>
+    </select>
+
+    <label style="font-weight:bold;">Μέλος WS OSR 2:</label>
+    <select id="wosrMember2Select" style="width:100%; height:38px; font-size:15px; margin-top:6px;">
+      <option value="">Επιλέξτε μέλος</option>
+    </select>
+  </div>
+</div>
     <div style="border:2px solid #8da170; background:#f8fff1; padding:14px; margin-bottom:16px; text-align:left;">
       <div style="font-weight:bold; font-size:18px; text-align:center; margin-bottom:12px;">
         ΤΙ ΑΛΛΑΓΗ ΘΕΛΕΤΕ ΝΑ ΚΑΝΕΤΕ;
@@ -1767,6 +1789,11 @@ function showCrewScreen() {
     document.getElementById("removeCrewChangeBox").style.display = this.checked ? "block" : "none";
   });
 
+  document.getElementById("changeWosrCrew").addEventListener("change", function () {
+  document.getElementById("wosrChangeBox").style.display = this.checked ? "block" : "none";
+  refreshWosrSelectors();
+});
+  
   document.querySelectorAll(".removeCrewCheck").forEach((check) => {
   check.addEventListener("change", function () {
     const label = this.closest("label");
@@ -2310,6 +2337,63 @@ function loadCrewFromJson(crewJson) {
 
   alert("Ο έλεγχος ολοκληρώθηκε σωστά. Στο επόμενο βήμα θα ανοίγει η φόρμα καταχώρησης αλλαγής πληρώματος.");
 }
+
+function getFinalCrewCandidates() {
+  const data = lastFoundData || {};
+  const originalCrew = Array.isArray(data.crew_members) ? data.crew_members : [];
+
+  const removedCards = new Set(
+    Array.from(document.querySelectorAll(".removeCrewCheck"))
+      .filter(check => check.checked)
+      .map(check => String(check.dataset.card || "").trim())
+  );
+
+  const finalCrew = originalCrew
+    .filter(m => !removedCards.has(String(m.card || "").trim()))
+    .map(m => ({
+      name: String(m.name || "").trim(),
+      card: String(m.card || "").trim(),
+      club: String(m.club || "").trim()
+    }));
+
+  document.querySelectorAll("#addedCrewTable tbody tr").forEach(row => {
+    if (row.dataset.cardStatus !== "valid") return;
+
+    finalCrew.push({
+      name: String(row.querySelector(".name")?.innerText || "").trim(),
+      card: String(row.querySelector("input")?.value || "").trim(),
+      club: String(row.querySelector(".club")?.innerText || "").trim()
+    });
+  });
+
+  return finalCrew.filter(m => m.name || m.card);
+}
+
+function refreshWosrSelectors() {
+  const sel1 = document.getElementById("wosrMember1Select");
+  const sel2 = document.getElementById("wosrMember2Select");
+
+  if (!sel1 || !sel2) return;
+
+  const old1 = sel1.value;
+  const old2 = sel2.value;
+
+  const members = getFinalCrewCandidates();
+
+  const options = ['<option value="">Επιλέξτε μέλος</option>']
+    .concat(members.map(m => {
+      const value = `${m.card}||${m.name}`;
+      return `<option value="${value}">${m.name} — ${m.card} — ${m.club}</option>`;
+    }))
+    .join("");
+
+  sel1.innerHTML = options;
+  sel2.innerHTML = options;
+
+  sel1.value = old1;
+  sel2.value = old2;
+}
+    
 </script>
 </body>
 </html>
